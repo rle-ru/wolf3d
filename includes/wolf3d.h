@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/21 19:04:15 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/22 11:21:34 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ typedef struct		s_matrix
 	double			m[4][4];
 }					t_matrix;
 
-typedef struct		s_vector2
-{
-	double			x;
-	double			y;
-}					t_vector2;
+// typedef struct		s_vector2
+// {
+// 	double			x;
+// 	double			y;
+// }					t_vector2;
 
 typedef struct		s_vector3
 {
@@ -80,24 +80,24 @@ typedef struct		s_vector3
 	int				color;
 }					t_vector3;
 
-typedef struct		s_cam
-{
-	t_vector3		pos;
-	t_matrix		projection[2];
-	t_matrix		rotation;
-	t_vector3		rot_angles;
-	t_vector3		pre_rot_angles;
-}					t_cam;
+// typedef struct		s_cam
+// {
+// 	t_vector3		pos;
+// 	t_matrix		projection[2];
+// 	t_matrix		rotation;
+// 	t_vector3		rot_angles;
+// 	t_vector3		pre_rot_angles;
+// }					t_cam;
 
-typedef struct		s_parser
-{
-	char			*fname;
-	int				fd;
-	t_line			*lines;
-	t_line			*last_line;
-	int				maxz;
-	int				minz;
-}					t_parser;
+// typedef struct		s_parser
+// {
+// 	char			*fname;
+// 	int				fd;
+// 	t_line			*lines;
+// 	t_line			*last_line;
+// 	int				maxz;
+// 	int				minz;
+// }					t_parser;
 
 typedef struct		s_canvas
 {
@@ -119,175 +119,201 @@ typedef struct		s_func
 	void			(*f)();
 }					t_func;
 
-typedef	struct		s_xiao
+typedef struct		s_vertex2
 {
-	int				color;
-	int				steep;
-	int				xpx11;
-	int				xpx12;
-	int				x;
-	double			dx;
-	double			dy;
-	double			gradient;
-	double			inter;
-	double			rel;
-	double			pos;
-}					t_xiao;
+	double			x;
+	double			y;
+}					t_vertex2;
 
-typedef struct		s_fdf
+typedef struct		s_vector2
+{
+	double			x;
+	double			y;
+}					t_vector2;
+
+typedef struct		s_cam
+{
+	t_vertex2		pos;
+	t_vector2		dir;
+}					t_cam;
+
+typedef struct		s_parser
+{
+	char			*fname;
+	int				fd;
+	t_bool			player;
+	t_line			*lines;
+	t_line			*last_line;
+}					t_parser;
+
+typedef struct		s_wolf
 {
 	t_parser		parser;
 	t_canvas		canvas;
-	t_cam			cam;
-	t_vector3		*map;
-	t_vector2		*project;
-	int				height;
+	t_cam			player;
+	int				*map;
 	int				width;
-	t_matrix		unit;
-	t_matrix		rot_x;
-	t_matrix		rot_y;
-	t_matrix		rot_z;
-	int				proj;
-	double			speed;
-	double			relief;
-	t_func			f[2];
-	int				drawer;
-	t_crea			crea;
-}					t_fdf;
+	int				height;
+	t_bool			keys[300];
+}					t_wolf;
 
 /*
-** Open the file
+** Open the map file.
 */
-t_error				ft_open_file(int ac, char **av, t_fdf *fdf);
+t_error				ft_open_file(int ac, char **av, t_parser *parser);
 
 /*
-** Initialize fdf struct
+** Parse the map and checks its format.
 */
-void				ft_init_fdf(t_fdf *fdf);
+t_error				ft_parse_file(t_wolf *w);
 
 /*
-** Parse the file
+** Put the map's data into an array, and checks it's validity.
 */
-t_error				ft_parse_file(t_fdf *fdf);
+t_error				ft_create_map(t_wolf *w);
 
 /*
-** Get the file's data to create the map into fdf struct
+** Free the file's lines
 */
-t_error				ft_create_map(t_fdf *fdf);
+void				free_lines(t_wolf *w);
 
 /*
-** Leave the file according to the situation
+** Leave programs, frees memory.
 */
-int					ft_leave(t_error ret, t_fdf *fdf);
+int					ft_leave(t_error ret, t_wolf *w);
 
 /*
-** Free the map's lines
+** Call ft_leave if a leave call is sent.
 */
-void				free_lines(t_fdf *fdf);
+int					hook_leave(t_wolf *w);
 
 /*
-** Initialize three different matrixes
+** Creates a MLX image and starts the MLX loops.
 */
-void				init_matrixes(t_fdf *fdf);
+t_error				init_mlx(t_wolf *w);
 
 /*
-** Manage keys input
+** Manages keys input.
 */
-int					key_hook(int key, t_fdf *fdf);
+int					key_hook(int key, t_wolf *w);
 
 /*
-** Display the map on the mlx screen
+** Manages key releases.
 */
-int					draw_map(t_fdf *fdf);
+int					key_unhook(int key, t_wolf *f);
 
 /*
-** Multiply matrixes
+** Ray casting function.
 */
-t_matrix			mat_4_mul(int nb, ...);
+int					draw(t_wolf *wolf);
 
-/*
-** Put pixels between two points
-*/
-void				bresenham(t_fdf *fdf, t_point o, t_point t, t_point color);
 
-/*
-** Put lines on screen
-*/
-void				put_line(t_fdf *fdf, int ox, int oy);
 
-/*
-** Multiply a matrix with a vector
-*/
-t_vector3			mat_4_mul_v(t_matrix m, t_vector3 v);
 
-/*
-** Get pixel color
-*/
-int					get_color(int from, int to, double a);
 
-/*
-** Add two vectors
-*/
-t_vector3			vec_3_add(t_vector3 a, t_vector3 b);
 
-/*
-** Sub two vectors
-*/
-t_vector3			vec_3_sub(t_vector3 a, t_vector3 b);
+// /*
+// ** Initialize fdf struct
+// */
+// void				ft_init_fdf(t_fdf *fdf);
 
-/*
-** Manage the rotation matrixes
-*/
-void				rotator(t_fdf *fdf, t_vector3 a);
 
-/*
-** Call ft_leave if a leave call is send
-*/
-int					hook_leave(t_fdf *fdf);
 
-/*
-** Return a color gradient
-*/
-double				get_gradient(double val, double first, double second);
 
-/*
-**	Manage antialiasing
-*/
-void				xiaolin(t_fdf *fdf, t_point o, t_point t, t_point color);
 
-/*
-** Put a pixel on the window
-*/
-void				put_pixel(t_fdf *fdf, int x, int y, int color);
 
-/*
-** Select a color for a point, depending on its altitude
-*/
-void				select_color(t_fdf *fdf, int i);
+// /*
+// ** Initialize three different matrixes
+// */
+// void				init_matrixes(t_fdf *fdf);
 
-/*
-** Reset the cam position
-*/
-void				reset_cam(t_fdf *fdf);
 
-/*
-**	Calls line drawers
-*/
-int					put_pixels(t_fdf *fdf);
 
-/*
-** Put a circle around a point in creative mode
-*/
-void				put_circle(t_fdf *fdf);
+// /*
+// ** Display the map on the mlx screen
+// */
+// int					draw_map(t_fdf *fdf);
 
-/*
-**	Project a 3D point in 2D
-*/
-t_vector2			project_point(t_fdf *fdf, int x, int y);
+// /*
+// ** Multiply matrixes
+// */
+// t_matrix			mat_4_mul(int nb, ...);
 
-/*
-**	Swap two integer pointers
-*/
-void				swap(int *a, int *b);
+// /*
+// ** Put pixels between two points
+// */
+// void				bresenham(t_fdf *fdf, t_point o, t_point t, t_point color);
+
+// /*
+// ** Put lines on screen
+// */
+// void				put_line(t_fdf *fdf, int ox, int oy);
+
+// /*
+// ** Multiply a matrix with a vector
+// */
+// t_vector3			mat_4_mul_v(t_matrix m, t_vector3 v);
+
+// /*
+// ** Get pixel color
+// */
+// int					get_color(int from, int to, double a);
+
+// /*
+// ** Add two vectors
+// */
+// t_vector3			vec_3_add(t_vector3 a, t_vector3 b);
+
+// /*
+// ** Sub two vectors
+// */
+// t_vector3			vec_3_sub(t_vector3 a, t_vector3 b);
+
+// /*
+// ** Manage the rotation matrixes
+// */
+// void				rotator(t_fdf *fdf, t_vector3 a);
+
+
+
+// /*
+// ** Return a color gradient
+// */
+// double				get_gradient(double val, double first, double second);
+
+// /*
+// ** Put a pixel on the window
+// */
+// void				put_pixel(t_fdf *fdf, int x, int y, int color);
+
+// /*
+// ** Select a color for a point, depending on its altitude
+// */
+// void				select_color(t_fdf *fdf, int i);
+
+// /*
+// ** Reset the cam position
+// */
+// void				reset_cam(t_fdf *fdf);
+
+// /*
+// **	Calls line drawers
+// */
+// int					put_pixels(t_fdf *fdf);
+
+// /*
+// ** Put a circle around a point in creative mode
+// */
+// void				put_circle(t_fdf *fdf);
+
+// /*
+// **	Project a 3D point in 2D
+// */
+// t_vector2			project_point(t_fdf *fdf, int x, int y);
+
+// /*
+// **	Swap two integer pointers
+// */
+// void				swap(int *a, int *b);
 
 #endif

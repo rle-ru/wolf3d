@@ -6,7 +6,7 @@
 #    By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/26 14:17:52 by rle-ru            #+#    #+#              #
-#    Updated: 2019/06/21 18:29:07 by rle-ru           ###   ########.fr        #
+#    Updated: 2019/06/22 09:58:59 by rle-ru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,30 +14,16 @@ NAME				=	wolf3d
 
 # Raw Sources
 
-SRCS_RAW			:=	bresenham.c						\
-						color.c							\
-						create_map.c					\
-						draw.c							\
-						free_lines.c					\
-						hook.c							\
-						init_fdf.c						\
-						leave.c							\
+SRCS_RAW			:=	\
 						main.c							\
-						matrix.c						\
-						matrix_mul.c					\
-						matrix_vector.c					\
 						open_file.c						\
 						parse_file.c					\
-						project_point.c					\
-						put_circle.c					\
-						put_line.c						\
-						put_pixel.c						\
-						put_pixels.c					\
-						reset_cam.c						\
-						rotation_matrix.c				\
-						swap.c							\
-						vector_op.c						\
-						xiaolin.c						\
+						create_map.c					\
+						free_lines.c					\
+						leave.c							\
+						init_mlx.c						\
+						hook.c							\
+						\
 
 # Directories
 
@@ -68,7 +54,7 @@ LIBFILES			:=	$(foreach LIB, $(LIBS), $(LIB)/$(notdir $(LIB)).a)
 
 CC					=	gcc
 
-CFLAGS				+=	-Wall -Werror -Wextra -flto -Ofast
+CFLAGS				+=	-Wall -Werror -Wextra -fsanitize="address" -g
 
 INCLUDES			:=	$(addprefix -I ,$(INCDIR))	
 
@@ -113,4 +99,4 @@ re					:	fclean all
 mlx					:	$(OBJS) libs
 						make -C minilibx
 						$(CC) -o $(NAME) $(CFLAGS) $(INCLIBS) -I minilibx/ $(OBJS) minilibx/libmlx.a -framework OpenGL -framework Appkit -L ./minilibx
-						./fdf maps/42.fdf
+						

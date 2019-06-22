@@ -6,27 +6,29 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 17:50:33 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/05/15 22:24:08 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/22 09:06:16 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "fdf.h"
+#include "wolf3d.h"
 #include "libft.h"
 
-void	free_lines(t_fdf *fdf)
+void	free_lines(t_wolf *w)
 {
 	t_line	*cur;
 	t_line	*tmp;
 
-	cur = fdf->parser.lines;
+	cur = w->parser.lines;
 	while (cur != NULL)
 	{
 		tmp = cur;
-		free(cur->line);
+		if (cur->line)
+			ft_memdel((void**)&cur->line);
 		cur = cur->next;
-		free(tmp);
+		if (cur)
+			ft_memdel((void**)&tmp);
 	}
-	fdf->parser.last_line = NULL;
-	fdf->parser.lines = NULL;
+	w->parser.last_line = NULL;
+	w->parser.lines = NULL;
 }

@@ -6,24 +6,27 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 08:11:48 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/05/15 22:22:49 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/22 10:00:03 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "fdf.h"
+#include "wolf3d.h"
 
 int		main(int ac, char **av)
 {
-	t_fdf	fdf;
+	t_wolf	w;
 	t_error	ret;
 
-	ft_bzero(&fdf, sizeof(t_fdf));
-	if ((ret = ft_open_file(ac, av, &fdf)) != ok)
-		ft_leave(ret, &fdf);
-	if ((ret = ft_parse_file(&fdf)))
-		ft_leave(ret, &fdf);
-	ft_init_fdf(&fdf);
-	ft_leave(ok, &fdf);
+	ft_bzero(&w, sizeof(t_wolf));
+	if ((ret = ft_open_file(ac, av, &w.parser)) != ok)
+		ft_leave(ret, &w);
+	if ((ret = ft_parse_file(&w)) != ok)
+		ft_leave(ret, &w);
+	if ((ret = ft_create_map(&w) != ok))
+		ft_leave(ret, &w);
+	// ft_init_wolf(&w);// return values ?
+	if ((ret = init_mlx(&w)) != ok)
+		ft_leave(ret, &w);
 	return (0);
 }
