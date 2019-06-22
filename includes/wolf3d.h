@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/22 11:21:34 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/22 14:40:00 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,6 @@ typedef struct		s_canvas
 	void			*mlx_ptr;
 	void			*window;
 	t_img			img;
-	double			w_height;
-	double			w_width;
 }					t_canvas;
 
 typedef struct		s_crea
@@ -200,14 +198,17 @@ int					key_hook(int key, t_wolf *w);
 /*
 ** Manages key releases.
 */
-int					key_unhook(int key, t_wolf *f);
+int					key_unhook(int key, t_wolf *w);
 
 /*
 ** Ray casting function.
 */
-int					draw(t_wolf *wolf);
+int					draw(t_wolf *w);
 
-
+/*
+** Put pixels between two points
+*/
+void				bresenham(t_wolf *f, t_point o, t_point t);
 
 
 
@@ -238,11 +239,6 @@ int					draw(t_wolf *wolf);
 // ** Multiply matrixes
 // */
 // t_matrix			mat_4_mul(int nb, ...);
-
-// /*
-// ** Put pixels between two points
-// */
-// void				bresenham(t_fdf *fdf, t_point o, t_point t, t_point color);
 
 // /*
 // ** Put lines on screen

@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/22 11:20:03 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/22 14:20:55 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_error	init_mlx(t_wolf *w)
 		W_WIDTH, W_HEIGHT)))
 		return (falloc);
 	if (!(w->canvas.img.img = (int*)mlx_get_data_addr(w->canvas.img.img_ptr,
-			&w->canvas.img.bpp, &w->canvas.img.stride, &w->canvas.img.endian)))
+		&w->canvas.img.bpp, &w->canvas.img.stride, &w->canvas.img.endian)))
 		return (falloc);
 	mlx_hook(w->canvas.window, 2, 1, key_hook, w);
 	mlx_hook(w->canvas.window, 17, 0, hook_leave, w);

@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/22 09:08:30 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/22 15:30:23 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 		if (line->line[lpos] == 'P')
 		{
 			if (w->parser.player == true)
-				return (badline);
+				return (badline); // same as below
 			w->player.pos.x = x;
 			w->player.pos.y = y;
 			++lpos;
@@ -37,10 +37,10 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 		}
 		w->map[y * w->width + x] = ft_atoi(line->line + lpos);
 		while (line->line[lpos] && (ft_isdigit(line->line[lpos])
-			|| line->line[lpos] == '-'))
+				|| line->line[lpos] == '-'))
 			++lpos;
 	}
-	return (ok);
+	return ((w->parser.player == true) ? ok : ok);//better return value for no player
 }
 
 t_error			ft_create_map(t_wolf *w)
@@ -63,6 +63,7 @@ t_error			ft_create_map(t_wolf *w)
 		line = line->next;
 		ft_memdel((void**)&tmp->line);
 		ft_memdel((void**)&tmp);
+		w->parser.lines = line;
 	}
 	w->parser.lines = NULL;
 	w->parser.last_line = NULL;
