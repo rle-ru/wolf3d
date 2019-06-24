@@ -6,20 +6,23 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 13:10:46 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/05/01 06:45:42 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/24 15:26:55 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 char	*ft_strcpy(char *dst, const char *src)
 {
-	int	i;
+	char	*ret;
 
-	i = 0;
-	while (src[i])
+	ret = dst;
+	if (!dst || !src)
+		return (0);
+	while (*src)
 	{
-		dst[i] = src[i];
-		i++;
+		*dst = *src;
+		++dst;
+		++src;
 	}
-	dst[i] = '\0';
-	return (dst);
+	*dst = '\0';
+	return (ret);
 }

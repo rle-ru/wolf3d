@@ -6,44 +6,32 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 14:29:07 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/05/01 06:29:39 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/24 13:20:25 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-
-static void	ltoa_isnegative(long *n, long *negative)
-{
-	if (*n < 0)
-	{
-		*n *= -1;
-		*negative = 1;
-	}
-}
+#include "libft.h"
 
 char		*ft_ltoa(long n)
 {
-	long	tmpn;
-	long	len;
-	long	negative;
-	char	*str;
+	char	buff[21];
+	int		i;
+	long	nb;
 
-	tmpn = n;
-	len = 2;
-	negative = 0;
-	ltoa_isnegative(&n, &negative);
-	while (tmpn /= 10)
-		len++;
-	len += negative;
-	if ((str = (char*)malloc(sizeof(char) * len)) == NULL)
-		return (NULL);
-	str[--len] = '\0';
-	while (len--)
+	buff[20] = 0;
+	buff[19] = '0';
+	i = 19;
+	nb = n;
+	while (nb)
 	{
-		str[len] = n % 10 + '0';
-		n = n / 10;
+		buff[i] = (ft_abs(nb % 10)) + '0';
+		nb /= 10;
+		--i;
 	}
-	if (negative)
-		str[0] = '-';
-	return (str);
+	if (n < 0)
+	{
+		buff[i] = '-';
+		--i;
+	}
+	return (ft_strdup(buff + i + 1));
 }

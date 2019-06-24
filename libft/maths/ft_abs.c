@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 15:19:36 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/05/28 06:03:07 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/24 14:27:01 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ long	ft_abs(long input)
 {
 	if (input == LONG_MIN)
 		return ((long)LONG_MIN);
-	return (input < 0) ? input * -1 : input;
+	return (input < 0) ? -input : input;
 }

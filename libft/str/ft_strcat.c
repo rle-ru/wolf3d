@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 13:32:35 by rle-ru            #+#    #+#             */
-/*   Updated: 2018/11/12 16:21:24 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/24 15:32:47 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 
 char	*ft_strcat(char *s1, const char *s2)
 {
-	int	j;
+	char	ret;
 
-	j = ft_strlen(s1);
+	if (!s1 || !s2)
+		return (0);
+	ret = s1;
+	s1 += ft_strlen(s1);
 	while (*s2)
-		s1[j++] = *s2++;
-	s1[j] = '\0';
-	return (s1);
+	{
+		*s1 = *s2;
+		++s1;
+		++s2;
+	}
+	*s1 = '\0';
+	return (ret);
 }

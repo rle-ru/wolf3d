@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 17:57:41 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/05/01 06:48:48 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/24 15:14:10 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 size_t	ft_strlen(const char *str)
 {
-	int	j;
+	const char	*c;
 
-	j = 0;
-	while (str[j])
-		j++;
-	return (j);
+	c = str;
+	while (*c)
+		++c;
+	return (c - str);
 }
