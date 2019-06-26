@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/22 14:40:00 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/26 12:06:48 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,14 @@ typedef struct		s_vector2
 
 typedef struct		s_cam
 {
+	t_point			map;
+	t_point			step;
+	t_vertex2		plane;
 	t_vertex2		pos;
+	t_vertex2		sidedist;
+	t_vertex2		deltadist;
 	t_vector2		dir;
+	double			pwdist;
 }					t_cam;
 
 typedef struct		s_parser
@@ -208,7 +214,7 @@ int					draw(t_wolf *w);
 /*
 ** Put pixels between two points
 */
-void				bresenham(t_wolf *f, t_point o, t_point t);
+void				bresenham(t_wolf *w, t_point o, t_point t);
 
 
 

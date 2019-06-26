@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/22 15:30:23 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/26 11:40:12 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ t_error			ft_create_map(t_wolf *w)
 		ft_memdel((void**)&tmp);
 		w->parser.lines = line;
 	}
+
+	w->player.dir.x = -1;//Deplacer tout ca, peut-etre init_wolf
+	w->player.dir.y = -0;
+	w->player.plane.x = 0;
+	w->player.plane.y = 0.66;//
+
 	w->parser.lines = NULL;
 	w->parser.last_line = NULL;
 	return (ok);
