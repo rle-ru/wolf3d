@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/26 11:40:12 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/26 18:40:41 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 		{
 			if (w->parser.player == true)
 				return (badline); // same as below
-			w->player.pos.x = x;
-			w->player.pos.y = y;
+			w->player.pos.x = (double)x;
+			w->player.pos.y = (double)y;
 			++lpos;
 			w->parser.player = true;
+			w->map[y * w->width + x] = 0;
 			continue ;
 		}
 		w->map[y * w->width + x] = ft_atoi(line->line + lpos);

@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/26 17:45:14 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/26 18:35:26 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	update_hooks(t_wolf *w)
 
 	w->ot = w->t;
 	w->t = clock();
-	printf("T : %llu, OT : %llu, FR ?: %llu\n", w->t, w->ot, w->t - w->ot);
+	// printf("T : %llu, OT : %llu, FR ?: %llu\n", w->t, w->ot, w->t - w->ot);
 	w->ft = (w->t - w->ot) / 1000;
 	w->fps = (int)(1.0 / w->ft);
 	// printf("FPS : %d\n", (int)(1.0 / w->ft));
@@ -130,12 +130,16 @@ static void	update_hooks(t_wolf *w)
 	if (w->keys[K_UP])
 	{
 		int	lim = (w->width - 1) * w->height - 1;
-		if ((tmp = (int)((w->player.pos.y * w->width) + w->player.pos.x + w->player.dir.x)) < lim && tmp > 0)
+		tmp = (int)((int)((w->player.pos.y + w->player.dir.y) * w->width) + (int)((w->player.pos.x + w->player.dir.x)));
+		if (tmp < lim && tmp > 0)
 			if (w->map[tmp] == false)
+			{
 				w->player.pos.x += w->player.dir.x;
-		if ((tmp = (int)(((w->player.pos.y + w->player.dir.y) * w->width) + w->player.pos.x)) < lim && tmp > 0)
-			if (w->map[tmp] == false)
 				w->player.pos.y += w->player.dir.y;
+			}
+		// if ((tmp = (int)(((w->player.pos.y + w->player.dir.y) * w->width) + w->player.pos.x)) < lim && tmp > 0)
+		// 	if (w->map[tmp] == false)
+		// 		w->player.pos.y += w->player.dir.y;
 	}
 	if (w->keys[K_DOWN])
 		w->player.pos.x -= 0.05 * w->player.dir.x;
