@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/26 12:06:48 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/26 17:02:51 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define W_TOP -500.0
 # define W_WIDTH 640
 # define W_HEIGHT 480
+# include <stdint.h>
 
 typedef enum		e_bool
 {
@@ -159,6 +160,12 @@ typedef struct		s_wolf
 	int				width;
 	int				height;
 	t_bool			keys[300];
+	uint64_t		t;
+	uint64_t		ot;
+	uint64_t		ft;
+	double			ms;
+	double			rs;
+	uint64_t		fps;
 }					t_wolf;
 
 /*
