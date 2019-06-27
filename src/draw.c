@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/27 02:41:06 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/27 15:26:17 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,14 @@ static void	update_hooks(t_wolf *w)
 	{
 		if (!w->map[(int)(w->player.pos.y * w->width) + (int)(w->player.pos.x + (w->player.dir.x * w->ms))])
 			w->player.pos.x += w->player.dir.x * w->ms;
-		if (!w->map[(int)((w->player.pos.y + (w->player.dir.y * w->ms)) * w->width) + (int)(w->player.pos.x)])
+		if (!w->map[(int)((int)(w->player.pos.y + w->player.dir.y * w->ms) * w->width + w->player.pos.x)])
 			w->player.pos.y += w->player.dir.y * w->ms;
 	}
 	if (s[SDL_SCANCODE_DOWN])
 	{
 		if (!w->map[(int)(w->player.pos.y * w->width) + (int)(w->player.pos.x - (w->player.dir.x * w->ms))])
 			w->player.pos.x -= w->player.dir.x * w->ms;
-		if (!w->map[(int)((w->player.pos.y - (w->player.dir.y * w->ms)) * w->width) + (int)(w->player.pos.x)])
+		if (!w->map[(int)((int)(w->player.pos.y - w->player.dir.y * w->ms) * w->width) + (int)(w->player.pos.x)])
 			w->player.pos.y -= w->player.dir.y * w->ms;
 	}
 }
@@ -152,7 +152,7 @@ static void	update_fps(t_wolf *w)
 	w->fps = (1 / w->ft);
 	w->ms = w->ft * 5.0;
 	w->rs = w->ft * 3.0;
-	printf("FPS :%llu\n", w->fps);
+	// printf("FPS :%llu\n", w->fps);
 }
 
 int			draw(t_wolf *w)
