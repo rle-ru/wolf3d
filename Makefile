@@ -6,7 +6,7 @@
 #    By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/26 14:17:52 by rle-ru            #+#    #+#              #
-#    Updated: 2019/06/27 01:25:39 by rle-ru           ###   ########.fr        #
+#    Updated: 2019/06/27 14:30:52 by rle-ru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,6 @@ LIBS				:=	$(LIBSPATH)/libft					\
 INCDIR				:=	$(LIBS:%=%/includes) 				\
 						/usr/local/include					\
 						includes							\
-						/usr/local/include/SDL2
 
 # Files
 
@@ -51,13 +50,13 @@ OBJS  				:=	$(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.o)
 
 DEPENDENCIES		:=	$(OBJS:%.o=%.d)
 
-LIBFILES			:=	$(foreach LIB, $(LIBS), $(LIB)/$(notdir $(LIB)).a)
+LIBFILES			:=	$(foreach LIB, $(LIBS), $(LIB)/$(notdir $(LIB)).a)  
 
 # Compiler Config
 
 CC					=	clang
 
-CFLAGS				+=	-Wall -Werror -Wextra -flto -Ofast
+CFLAGS				+=	-Wall -Werror -Wextra -flto -Ofast  $(shell pkg-config --cflags SDL2 SDL2_ttf)
 
 INCLUDES			:=	$(addprefix -I ,$(INCDIR)) 
 
@@ -68,7 +67,7 @@ INCLIBS				:=	$(foreach LIB,$(LIBS),-L $(LIB) $(subst lib,-l,$(notdir $(LIB))))
 all					:	libs $(NAME)
 
 $(NAME)				: 	$(OBJS) $(LIBFILES)
-						$(CC) $(CFLAGS) -o $@ $(INCLIBS) -lSDL2 $(OBJS)
+						$(CC) $(CFLAGS) -o $@ $(INCLIBS) $(shell pkg-config --libs SDL2 SDL2_ttf) $(OBJS)
 
 # Make Libs
 
