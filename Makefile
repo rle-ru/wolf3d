@@ -6,7 +6,7 @@
 #    By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/26 14:17:52 by rle-ru            #+#    #+#              #
-#    Updated: 2019/06/22 15:29:17 by rle-ru           ###   ########.fr        #
+#    Updated: 2019/06/27 01:25:39 by rle-ru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCS_RAW			:=	\
 						create_map.c					\
 						free_lines.c					\
 						leave.c							\
-						init_mlx.c						\
+						init_sdl.c						\
 						hook.c							\
 						draw.c							\
 						bresenham.c						\
@@ -37,10 +37,11 @@ LIBSPATH			=	.
 
 LIBS				:=	$(LIBSPATH)/libft					\
 
+
 INCDIR				:=	$(LIBS:%=%/includes) 				\
 						/usr/local/include					\
 						includes							\
-						minilibx
+						/usr/local/include/SDL2
 
 # Files
 
@@ -54,11 +55,11 @@ LIBFILES			:=	$(foreach LIB, $(LIBS), $(LIB)/$(notdir $(LIB)).a)
 
 # Compiler Config
 
-CC					=	gcc
+CC					=	clang
 
-CFLAGS				+=	-Wall -Werror -Wextra -fsanitize="address" -g
+CFLAGS				+=	-Wall -Werror -Wextra -flto -Ofast
 
-INCLUDES			:=	$(addprefix -I ,$(INCDIR))	
+INCLUDES			:=	$(addprefix -I ,$(INCDIR)) 
 
 INCLIBS				:=	$(foreach LIB,$(LIBS),-L $(LIB) $(subst lib,-l,$(notdir $(LIB))))
 
@@ -67,7 +68,7 @@ INCLIBS				:=	$(foreach LIB,$(LIBS),-L $(LIB) $(subst lib,-l,$(notdir $(LIB))))
 all					:	libs $(NAME)
 
 $(NAME)				: 	$(OBJS) $(LIBFILES)
-						$(CC) -o $@ $(CFLAGS) $(INCLIBS) $(OBJS) -framework OpenGL -framework AppKit -L /usr/local/lib -lmlx
+						$(CC) $(CFLAGS) -o $@ $(INCLIBS) -lSDL2 $(OBJS)
 
 # Make Libs
 
@@ -97,8 +98,3 @@ fclean				:	clean
 
 .PHONY				:	re
 re					:	fclean all
-
-mlx					:	$(OBJS) libs
-						make -C minilibx
-						$(CC) -o $(NAME) $(CFLAGS) $(INCLIBS) -I minilibx/ $(OBJS) minilibx/libmlx.a -framework OpenGL -framework Appkit -L ./minilibx
-						

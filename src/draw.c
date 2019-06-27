@@ -6,17 +6,27 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/26 18:35:26 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/27 02:41:06 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
 #include "wolf3d.h"
 #include "libft.h"
 #include <math.h>
 #include "keys.h"
-#include <time.h>
-#include <SDL/SDL.h>
+#include <SDL.h>
+
+int			chose(int tile)
+{
+	if (tile == 1)
+		return (0xFFF0);
+	else if (tile == 2)
+		return (0xFFF);
+	else if (tile == 3)
+		return (0xFF);
+	else
+		return (0xFFFFFF);
+}
 
 int			ray_casting(t_wolf *w)
 {
@@ -86,7 +96,9 @@ int			ray_casting(t_wolf *w)
 		int drawe = lineh * 0.5 + W_HEIGHT * 0.5;
 		if (drawe >= W_HEIGHT)
 			drawe = W_HEIGHT - 1;
-		bresenham(w, (t_point){x, draws}, (t_point){x, drawe});
+		int	color = chose(w->map[w->player.map.y * w->width + w->player.map.x]);
+		bresenham(w, (t_point){x, draws}, (t_point){x, drawe}, side == 1 ? color : (color >> 1));
+		//remplacer bresenham par une fonction qui dessine en vertical, sans multiplication
 		++x;
 	}
 	return (0);
@@ -94,17 +106,11 @@ int			ray_casting(t_wolf *w)
 #include <stdio.h>
 static void	update_hooks(t_wolf *w)
 {
-	int		tmp;
-
-	w->ot = w->t;
-	w->t = clock();
-	// printf("T : %llu, OT : %llu, FR ?: %llu\n", w->t, w->ot, w->t - w->ot);
-	w->ft = (w->t - w->ot) / 1000;
-	w->fps = (int)(1.0 / w->ft);
-	// printf("FPS : %d\n", (int)(1.0 / w->ft));
-	w->ms = w->ft * 0.8;
-	w->rs = w->ft * 0.01;
-	if (w->keys[K_LEFT])
+	const uint8_t	*s = SDL_GetKeyboardState(NULL);
+	
+	if(s[SDL_SCANCODE_ESCAPE])
+		exit(0);//
+	if (s[SDL_SCANCODE_LEFT])
 	{
 		double odx = w->player.dir.x;
 		w->player.dir.x = odx * cos(w->rs) - w->player.dir.y * sin(w->rs);
@@ -113,7 +119,7 @@ static void	update_hooks(t_wolf *w)
 		w->player.plane.x = opx * cos(w->rs) - w->player.plane.y * sin(w->rs);
 		w->player.plane.y = opx * sin(w->rs) + w->player.plane.y * cos(w->rs);
 	}
-	if (w->keys[K_RIGHT])
+	if (s[SDL_SCANCODE_RIGHT])
 	{
 		double odx = w->player.dir.x;
 		w->player.dir.x = odx * cos(-w->rs) - w->player.dir.y * sin(-w->rs);
@@ -122,39 +128,60 @@ static void	update_hooks(t_wolf *w)
 		w->player.plane.x = opx * cos(-w->rs) - w->player.plane.y * sin(-w->rs);
 		w->player.plane.y = opx * sin(-w->rs) + w->player.plane.y * cos(-w->rs);
 	}
-	//    if (keyDown(SDLK_UP))
-    // {
-    //   if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
-    //   if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
-    // }
-	if (w->keys[K_UP])
+	if (s[SDL_SCANCODE_UP])
 	{
-		int	lim = (w->width - 1) * w->height - 1;
-		tmp = (int)((int)((w->player.pos.y + w->player.dir.y) * w->width) + (int)((w->player.pos.x + w->player.dir.x)));
-		if (tmp < lim && tmp > 0)
-			if (w->map[tmp] == false)
-			{
-				w->player.pos.x += w->player.dir.x;
-				w->player.pos.y += w->player.dir.y;
-			}
-		// if ((tmp = (int)(((w->player.pos.y + w->player.dir.y) * w->width) + w->player.pos.x)) < lim && tmp > 0)
-		// 	if (w->map[tmp] == false)
-		// 		w->player.pos.y += w->player.dir.y;
+		if (!w->map[(int)(w->player.pos.y * w->width) + (int)(w->player.pos.x + (w->player.dir.x * w->ms))])
+			w->player.pos.x += w->player.dir.x * w->ms;
+		if (!w->map[(int)((w->player.pos.y + (w->player.dir.y * w->ms)) * w->width) + (int)(w->player.pos.x)])
+			w->player.pos.y += w->player.dir.y * w->ms;
 	}
-	if (w->keys[K_DOWN])
-		w->player.pos.x -= 0.05 * w->player.dir.x;
+	if (s[SDL_SCANCODE_DOWN])
+	{
+		if (!w->map[(int)(w->player.pos.y * w->width) + (int)(w->player.pos.x - (w->player.dir.x * w->ms))])
+			w->player.pos.x -= w->player.dir.x * w->ms;
+		if (!w->map[(int)((w->player.pos.y - (w->player.dir.y * w->ms)) * w->width) + (int)(w->player.pos.x)])
+			w->player.pos.y -= w->player.dir.y * w->ms;
+	}
+}
+
+static void	update_fps(t_wolf *w)
+{
+	w->ot = w->t;
+	w->t = SDL_GetTicks();
+	w->ft = (w->t - w->ot) / 1000.0;
+	w->fps = (1 / w->ft);
+	w->ms = w->ft * 5.0;
+	w->rs = w->ft * 3.0;
+	printf("FPS :%llu\n", w->fps);
 }
 
 int			draw(t_wolf *w)
 {
-	update_hooks(w);
-	mlx_clear_window(w->canvas.mlx_ptr, w->canvas.window);
-	ft_bzero(w->canvas.img.img, W_WIDTH * W_HEIGHT * sizeof(int));
-	ray_casting(w);//
-	mlx_put_image_to_window(w->canvas.mlx_ptr, w->canvas.window,
-		w->canvas.img.img_ptr, 0, 0);
-	char *fps = ft_itoa(w->fps);
-	mlx_string_put(w->canvas.mlx_ptr, w->canvas.window, 10, 10, 0xFF0000, fps);
-	free(fps);
+	SDL_Event	event;
+	while (1)
+	{
+		update_fps(w);
+		SDL_PollEvent(&event);
+                if(event.type == SDL_QUIT)
+                        break;
+		ft_bzero(w->canvas.img, IMG_SIZE);
+		update_hooks(w);
+		ray_casting(w);
+		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
+				W_WIDTH * 4);
+		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
+		SDL_RenderPresent(w->canvas.renderer);
+	}
+	// mlx_clear_window(w->canvas.mlx_ptr, w->canvas.window);
+	// ft_bzero(w->canvas.img.img, W_WIDTH * W_HEIGHT * sizeof(int));
+	// ray_casting(w);//
+	// mlx_put_image_to_window(w->canvas.mlx_ptr, w->canvas.window,
+		// w->canvas.img.img_ptr, 0, 0);
+	// char *fps = ft_itoa(w->fps);
+	// mlx_string_put(w->canvas.mlx_ptr, w->canvas.window, 10, 10, 0xFF0000, fps);
+	// free(fps);
+	free(w->canvas.img);
+	SDL_DestroyRenderer(w->canvas.renderer);
+    SDL_Quit();
 	return (0);
 }

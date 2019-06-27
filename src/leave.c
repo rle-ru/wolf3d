@@ -6,13 +6,13 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 12:01:44 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/22 15:30:51 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/06/26 21:12:15 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 #include "libft.h"
-#include "mlx.h"
+#include <SDL.h>
 
 static void		ft_usage(void)
 {
@@ -35,10 +35,6 @@ static void		ft_clear(t_wolf *w)
 {
 	if (w->parser.lines)
 		free_lines(w);
-	if (w->canvas.window)
-		mlx_destroy_window(w->canvas.mlx_ptr, w->canvas.window);
-	if (w->canvas.img.img_ptr)
-		mlx_destroy_image(w->canvas.mlx_ptr, w->canvas.img.img_ptr);
 	if (w->map)
 		free(w->map);
 }
