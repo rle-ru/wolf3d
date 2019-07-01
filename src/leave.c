@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 12:01:44 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/26 21:12:15 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/01 13:14:02 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void		ft_clear(t_wolf *w)
 {
 	if (w->parser.lines)
 		free_lines(w);
-	if (w->map)
-		free(w->map);
+	// if (w->map)
+	// 	free(w->map);
 }
 
 int				ft_leave(t_error ret, t_wolf *w)

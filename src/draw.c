@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/27 15:26:17 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/01 14:26:38 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,21 @@ int			ray_casting(t_wolf *w)
 				w->player.map.y += w->player.step.y;
 				side = 1;
 			}
-			if (w->map[w->player.map.y * w->width + w->player.map.x] > 0)
+			if (w->map[w->player.map.x][w->player.map.y] > 0)
 				hit = 1;
 		}
 		if (!side)
 			w->player.pwdist = (w->player.map.x - w->player.pos.x + (1 - w->player.step.x) * 0.5) / raydirx;
 		else
 			w->player.pwdist = (w->player.map.y - w->player.pos.y + (1 - w->player.step.y) * 0.5) / raydiry;
-		int lineh = (int)(W_HEIGHT / w->player.pwdist);
-		int draws = -lineh * 0.5 + W_HEIGHT * 0.5;
+		int lineh = (int)(W_GHEIGHT / w->player.pwdist);
+		int draws = -lineh * 0.5 + W_GHEIGHT2;
 		if (draws < 0)
 			draws = 0;
-		int drawe = lineh * 0.5 + W_HEIGHT * 0.5;
-		if (drawe >= W_HEIGHT)
-			drawe = W_HEIGHT - 1;
-		int	color = chose(w->map[w->player.map.y * w->width + w->player.map.x]);
+		int drawe = lineh * 0.5 + W_GHEIGHT2;
+		if (drawe >= W_GHEIGHT)
+			drawe = W_GHEIGHT - 1;
+		int	color = chose(w->map[w->player.map.x][w->player.map.y]);
 		bresenham(w, (t_point){x, draws}, (t_point){x, drawe}, side == 1 ? color : (color >> 1));
 		//remplacer bresenham par une fonction qui dessine en vertical, sans multiplication
 		++x;
@@ -130,16 +130,16 @@ static void	update_hooks(t_wolf *w)
 	}
 	if (s[SDL_SCANCODE_UP])
 	{
-		if (!w->map[(int)(w->player.pos.y * w->width) + (int)(w->player.pos.x + (w->player.dir.x * w->ms))])
+		if (!w->map[(int)(w->player.pos.x + w->player.dir.x * w->ms)][(int)w->player.pos.y])
 			w->player.pos.x += w->player.dir.x * w->ms;
-		if (!w->map[(int)((int)(w->player.pos.y + w->player.dir.y * w->ms) * w->width + w->player.pos.x)])
+		if (!w->map[(int)w->player.pos.x][(int)(w->player.pos.y + w->player.dir.y * w->ms)])
 			w->player.pos.y += w->player.dir.y * w->ms;
 	}
 	if (s[SDL_SCANCODE_DOWN])
 	{
-		if (!w->map[(int)(w->player.pos.y * w->width) + (int)(w->player.pos.x - (w->player.dir.x * w->ms))])
+		if (!w->map[(int)(w->player.pos.x)][(int)(w->player.pos.y - (w->player.dir.y * w->ms))])
 			w->player.pos.x -= w->player.dir.x * w->ms;
-		if (!w->map[(int)((int)(w->player.pos.y - w->player.dir.y * w->ms) * w->width) + (int)(w->player.pos.x)])
+		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms)][(int)(w->player.pos.y)])
 			w->player.pos.y -= w->player.dir.y * w->ms;
 	}
 }
@@ -172,14 +172,6 @@ int			draw(t_wolf *w)
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
 		SDL_RenderPresent(w->canvas.renderer);
 	}
-	// mlx_clear_window(w->canvas.mlx_ptr, w->canvas.window);
-	// ft_bzero(w->canvas.img.img, W_WIDTH * W_HEIGHT * sizeof(int));
-	// ray_casting(w);//
-	// mlx_put_image_to_window(w->canvas.mlx_ptr, w->canvas.window,
-		// w->canvas.img.img_ptr, 0, 0);
-	// char *fps = ft_itoa(w->fps);
-	// mlx_string_put(w->canvas.mlx_ptr, w->canvas.window, 10, 10, 0xFF0000, fps);
-	// free(fps);
 	free(w->canvas.img);
 	SDL_DestroyRenderer(w->canvas.renderer);
     SDL_Quit();

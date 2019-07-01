@@ -6,7 +6,7 @@
 #    By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/26 14:17:52 by rle-ru            #+#    #+#              #
-#    Updated: 2019/06/27 14:30:52 by rle-ru           ###   ########.fr        #
+#    Updated: 2019/07/01 15:05:32 by rle-ru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ LIBFILES			:=	$(foreach LIB, $(LIBS), $(LIB)/$(notdir $(LIB)).a)
 
 CC					=	clang
 
-CFLAGS				+=	-Wall -Werror -Wextra -flto -Ofast  $(shell pkg-config --cflags SDL2 SDL2_ttf)
+CFLAGS				+=	-Wall -Werror -Wextra $(shell pkg-config --cflags SDL2 SDL2_ttf) \
+						-flto -Ofast  \
 
 INCLUDES			:=	$(addprefix -I ,$(INCDIR)) 
 

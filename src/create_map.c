@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/27 15:07:03 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/01 13:11:04 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 			w->player.pos.y = (double)y;
 			++lpos;
 			w->parser.player = true;
-			w->map[y * w->width + x] = 0;//multiplication qui peut etre retiree, y * w->width etant constant dans la fonction
+			w->map[x][y] = 0;//multiplication qui peut etre retiree, y * w->width etant constant dans la fonction
 			continue ;
 		}
-		w->map[y * w->width + x] = ft_atoi(line->line + lpos);
+		w->map[x][y] = ft_atoi(line->line + lpos);
 		while (line->line[lpos] && (ft_isdigit(line->line[lpos])
 				|| line->line[lpos] == '-'))
 			++lpos;
@@ -53,8 +53,18 @@ t_error			ft_create_map(t_wolf *w)
 
 	y = -1;
 	w->width = w->parser.lines->nbx;
-	if (!(w->map = malloc(w->width * w->height * sizeof(int))))
+	if (!(w->map = malloc(w->width * sizeof(int*))))
 		return (falloc);
+	int		i;
+	i = 0;
+	while (i < w->width)
+	{
+		if (!(w->map[i] = malloc(w->height * sizeof(int))))
+			return (falloc);
+		++i;
+	}
+	// if (!(w->map = malloc(w->width * w->height * sizeof(int))))
+	// 	return (falloc);
 	line = w->parser.lines;
 	while (++y < w->height && line != NULL)
 	{

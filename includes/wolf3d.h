@@ -6,14 +6,17 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/27 02:09:11 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/01 14:23:08 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
 # define W_WIDTH 640
+# define W_WIDTH2 W_WIDTH * 0.5
 # define W_HEIGHT 480
+# define W_GHEIGHT 380 // reserve 100px for hud
+# define W_GHEIGHT2 W_GHEIGHT * 0.5
 # define IMG_SIZE 4 * W_HEIGHT * W_WIDTH
 # include <stdint.h>
 # include <SDL.h>
@@ -126,7 +129,7 @@ typedef struct		s_wolf
 	t_parser		parser;
 	t_canvas		canvas;
 	t_cam			player;
-	int				*map;
+	int				**map;
 	int				width;
 	int				height;
 	t_bool			keys[300];
