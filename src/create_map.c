@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/01 13:11:04 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/08 13:44:05 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 			w->player.pos.y = (double)y;
 			++lpos;
 			w->parser.player = true;
-			w->map[x][y] = 0;//multiplication qui peut etre retiree, y * w->width etant constant dans la fonction
+			w->map[x][y] = 0;
 			continue ;
 		}
 		w->map[x][y] = ft_atoi(line->line + lpos);

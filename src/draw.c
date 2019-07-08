@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/01 14:26:38 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/08 14:39:04 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int			ray_casting(t_wolf *w)
 	}
 	return (0);
 }
+
+
 #include <stdio.h>
 static void	update_hooks(t_wolf *w)
 {
@@ -137,9 +139,9 @@ static void	update_hooks(t_wolf *w)
 	}
 	if (s[SDL_SCANCODE_DOWN])
 	{
-		if (!w->map[(int)(w->player.pos.x)][(int)(w->player.pos.y - (w->player.dir.y * w->ms))])
+		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms)][(int)w->player.pos.y])
 			w->player.pos.x -= w->player.dir.x * w->ms;
-		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms)][(int)(w->player.pos.y)])
+		if (!w->map[(int)w->player.pos.x][(int)(w->player.pos.y - w->player.dir.y * w->ms)])
 			w->player.pos.y -= w->player.dir.y * w->ms;
 	}
 }
@@ -155,6 +157,24 @@ static void	update_fps(t_wolf *w)
 	// printf("FPS :%llu\n", w->fps);
 }
 
+// void		put_img(t_wolf *w)
+// {
+// 	int	x;
+// 	int	y;
+
+// 	y = 0;
+// 	while (y < w->text->h)
+// 	{
+// 		x = 0;
+// 		while (x < w->text->w)
+// 		{
+// 			w->canvas.img[y * w->text->w + x] = (int*)(w->text->pixels)[y * w->text->w + x];
+// 			++x;
+// 		}
+// 		++y;
+// 	}
+// }
+
 int			draw(t_wolf *w)
 {
 	SDL_Event	event;
@@ -162,11 +182,12 @@ int			draw(t_wolf *w)
 	{
 		update_fps(w);
 		SDL_PollEvent(&event);
-                if(event.type == SDL_QUIT)
-                        break;
+		if (event.type == SDL_QUIT)
+			break;
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
 		ray_casting(w);
+		// put_img(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
 				W_WIDTH * 4);
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);

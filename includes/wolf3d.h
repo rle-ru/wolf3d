@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/01 14:23:08 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/08 13:26:45 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define IMG_SIZE 4 * W_HEIGHT * W_WIDTH
 # include <stdint.h>
 # include <SDL.h>
-
+# include <SDL_image.h>
 
 typedef enum		e_bool
 {
@@ -139,6 +139,7 @@ typedef struct		s_wolf
 	double			ms;
 	double			rs;
 	uint64_t		fps;
+	SDL_Surface		*text;
 }					t_wolf;
 
 /*

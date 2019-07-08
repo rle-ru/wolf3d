@@ -6,15 +6,17 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/27 01:02:21 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/08 13:30:28 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 #include <SDL.h>
+#include <SDL_image.h>
 
 t_error	init_sdl(t_wolf *w)
 {
+	w->text = IMG_Load("pics/colorstone.png");
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		return (falloc);
 	w->canvas.window = SDL_CreateWindow(
