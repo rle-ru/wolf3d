@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/08 13:26:45 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/08 19:38:35 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,22 @@ typedef struct		s_parser
 	t_line			*last_line;
 }					t_parser;
 
+typedef struct		s_ray_cast
+{
+	double		raydirx;
+	double		raydiry;
+	int			line_heigth;
+	int			draw_start;
+	int			draw_end;
+	int			color;
+}					t_ray_cast;
+
 typedef struct		s_wolf
 {
 	t_parser		parser;
 	t_canvas		canvas;
 	t_cam			player;
+	t_ray_cast		ray;
 	int				**map;
 	int				width;
 	int				height;
@@ -188,9 +199,14 @@ int					key_hook(int key, t_wolf *w);
 int					key_unhook(int key, t_wolf *w);
 
 /*
-** Ray casting function.
+** Call the ray casting function.
 */
 int					draw(t_wolf *w);
+
+/*
+** Ray casting function.
+*/
+int					ray_casting(t_wolf *w);
 
 /*
 ** Put pixels between two points
