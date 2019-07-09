@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/26 14:17:52 by rle-ru            #+#    #+#              #
-#    Updated: 2019/07/08 16:08:24 by dacuvill         ###   ########.fr        #
+#    Updated: 2019/07/09 10:08:12 by rle-ru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ SRCS_RAW			:=	\
 						free_lines.c					\
 						leave.c							\
 						init_sdl.c						\
-						hook.c							\
 						draw.c							\
 						bresenham.c						\
 						ray_casting.c					\
