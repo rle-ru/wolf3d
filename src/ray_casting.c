@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/09 10:09:58 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/09 12:16:18 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,23 @@ static void		check_collision(t_wolf *w, int *side)
 	}
 }
 
+static void		put_line(t_wolf *w, int x, double xd)
+{
+	int	y;
+	int	i;
+	int	yt;
+
+	i = w->ray.draw_start * W_WIDTH + x;
+	y = w->ray.draw_start;
+	while (y < w->ray.draw_end)
+	{
+		yt = (int)();
+		w->canvas.img[i] = w->text->pixels[yt * w->text->w + 0];//
+		i += W_WIDTH;
+		++y;
+	}
+}
+
 static void		ray_casting2(t_wolf *w, int side, int x)
 {
 	if (!side)
@@ -89,14 +106,17 @@ static void		ray_casting2(t_wolf *w, int side, int x)
 			+ (1 - w->player.step.y) * 0.5) / w->ray.raydiry;
 	w->ray.line_heigth = (int)(W_GHEIGHT / w->player.pwdist);
 	w->ray.draw_start = -(w->ray.line_heigth) * 0.5 + W_GHEIGHT2;
+	w->ray.yts = w->ray.draw_start;
 	if (w->ray.draw_start < 0)
 		w->ray.draw_start = 0;
 	w->ray.draw_end = w->ray.line_heigth * 0.5 + W_GHEIGHT2;
+	w->ray.yte = w->ray.draw_end;
 	if (w->ray.draw_end >= W_GHEIGHT)
 		w->ray.draw_end = W_GHEIGHT - 1;
+	put_line(w, x);//
 	w->ray.color = choose_color(w->map[w->player.map.x][w->player.map.y]);
-	bresenham(w, (t_point){x, w->ray.draw_start}, (t_point){x, w->ray.draw_end},
-		side == 1 ? w->ray.color : (w->ray.color >> 1));
+	// bresenham(w, (t_point){x, w->ray.draw_start}, (t_point){x, w->ray.draw_end},
+		// side == 1 ? w->ray.color : (w->ray.color >> 1));
 	//remplacer bresenham par une fonction qui dessine en vertical, sans multiplication
 }
 

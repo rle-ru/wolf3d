@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/09 10:35:11 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/09 12:12:50 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,15 @@ typedef struct		s_parser
 
 typedef struct		s_ray_cast
 {
-	double		raydirx;
-	double		raydiry;
-	int			line_heigth;
-	int			draw_start;
-	int			draw_end;
-	int			color;
+	double			raydirx;
+	double			raydiry;
+	int				line_heigth;
+	int				draw_start;
+	int				draw_end;
+	int				yts;
+	int				yte;
+	int				xt;
+	int				color;
 }					t_ray_cast;
 
 typedef struct		s_wolf

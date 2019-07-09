@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/09 10:31:12 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/09 12:15:29 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void		put_img(t_wolf *w)
 	int	y;
 
 	y = 0;
-	printf("Text h : %d\nText w : %d\n", w->text->h, w->text->w);
 	while (y < w->text->h)
 	{
 		x = 0;
@@ -98,7 +97,7 @@ int			draw(t_wolf *w)
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
 		ray_casting(w);
-		put_img(w);
+			// put_img(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
 				W_WIDTH * 4);
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
