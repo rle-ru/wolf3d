@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/08 13:30:28 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/09 10:32:16 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_error	init_sdl(t_wolf *w)
 {
-	w->text = IMG_Load("pics/colorstone.png");
+	w->text = SDL_ConvertSurfaceFormat(IMG_Load("pics/colorstone.png"), SDL_PIXELFORMAT_ARGB8888, 0);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		return (falloc);
 	w->canvas.window = SDL_CreateWindow(
