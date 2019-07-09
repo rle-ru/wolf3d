@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/09 12:15:29 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/09 16:35:15 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,44 +16,55 @@
 #include <SDL.h>
 
 #include <stdio.h>
+
+static void	update_hooks2(t_wolf *w)
+{
+	if (s[SDL_SCANCODE_UP])
+	{
+		if (!w->map[(int)(w->player.pos.x + w->player.dir.x * w->ms)]
+			[(int)w->player.pos.y])
+			w->player.pos.x += w->player.dir.x * w->ms;
+		if (!w->map[(int)w->player.pos.x]
+			[(int)(w->player.pos.y + w->player.dir.y * w->ms)])
+			w->player.pos.y += w->player.dir.y * w->ms;
+	}
+	if (s[SDL_SCANCODE_DOWN])
+	{
+		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms)]
+			[(int)w->player.pos.y])
+			w->player.pos.x -= w->player.dir.x * w->ms;
+		if (!w->map[(int)w->player.pos.x]
+			[(int)(w->player.pos.y - w->player.dir.y * w->ms)])
+			w->player.pos.y -= w->player.dir.y * w->ms;
+	}
+	return ;
+}
+
 static void	update_hooks(t_wolf *w)
 {
 	const uint8_t	*s = SDL_GetKeyboardState(NULL);
-	
-	if(s[SDL_SCANCODE_ESCAPE])
+	double			odx;
+	double			opx;
+
+	odx = w->player.dir.x;
+	opx = w->player.plane.x;
+	if (s[SDL_SCANCODE_ESCAPE])
 		exit(0);//
 	if (s[SDL_SCANCODE_LEFT])
 	{
-		double odx = w->player.dir.x;
 		w->player.dir.x = odx * cos(w->rs) - w->player.dir.y * sin(w->rs);
 		w->player.dir.y = odx * sin(w->rs) + w->player.dir.y * cos(w->rs);
-		double	opx = w->player.plane.x;
 		w->player.plane.x = opx * cos(w->rs) - w->player.plane.y * sin(w->rs);
 		w->player.plane.y = opx * sin(w->rs) + w->player.plane.y * cos(w->rs);
 	}
 	if (s[SDL_SCANCODE_RIGHT])
 	{
-		double odx = w->player.dir.x;
 		w->player.dir.x = odx * cos(-w->rs) - w->player.dir.y * sin(-w->rs);
 		w->player.dir.y = odx * sin(-w->rs) + w->player.dir.y * cos(-w->rs);
-		double	opx = w->player.plane.x;
 		w->player.plane.x = opx * cos(-w->rs) - w->player.plane.y * sin(-w->rs);
 		w->player.plane.y = opx * sin(-w->rs) + w->player.plane.y * cos(-w->rs);
 	}
-	if (s[SDL_SCANCODE_UP])
-	{
-		if (!w->map[(int)(w->player.pos.x + w->player.dir.x * w->ms)][(int)w->player.pos.y])
-			w->player.pos.x += w->player.dir.x * w->ms;
-		if (!w->map[(int)w->player.pos.x][(int)(w->player.pos.y + w->player.dir.y * w->ms)])
-			w->player.pos.y += w->player.dir.y * w->ms;
-	}
-	if (s[SDL_SCANCODE_DOWN])
-	{
-		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms)][(int)w->player.pos.y])
-			w->player.pos.x -= w->player.dir.x * w->ms;
-		if (!w->map[(int)w->player.pos.x][(int)(w->player.pos.y - w->player.dir.y * w->ms)])
-			w->player.pos.y -= w->player.dir.y * w->ms;
-	}
+	return (update_hooks2(w));
 }
 
 static void	update_fps(t_wolf *w)
@@ -78,7 +89,8 @@ void		put_img(t_wolf *w)
 		x = 0;
 		while (x < w->text->w)
 		{
-			w->canvas.img[y * W_WIDTH + x] = ((int*)(w->text->pixels))[y * w->text->w + x];
+			w->canvas.img[y * W_WIDTH + x] =
+				((int*)(w->text->pixels))[y * w->text->w + x];
 			++x;
 		}
 		++y;
@@ -88,23 +100,24 @@ void		put_img(t_wolf *w)
 int			draw(t_wolf *w)
 {
 	SDL_Event	event;
+
 	while (1)
 	{
 		update_fps(w);
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
-			break;
+			break ;
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
 		ray_casting(w);
-			// put_img(w);
+		// put_img(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
-				W_WIDTH * 4);
+			W_WIDTH * 4);
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
 		SDL_RenderPresent(w->canvas.renderer);
 	}
 	free(w->canvas.img);
 	SDL_DestroyRenderer(w->canvas.renderer);
-    SDL_Quit();
+	SDL_Quit();
 	return (0);
 }
