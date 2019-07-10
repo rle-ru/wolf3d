@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 08:47:14 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 11:26:26 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void				free_lines(t_wolf *w);
 /*
 ** Leave programs, frees memory.
 */
-int					ft_leave(t_error ret, t_wolf *w);
+int					leave(t_error ret, t_wolf *w);
 
 /*
 ** Call ft_leave if a leave call is sent.
