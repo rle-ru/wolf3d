@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/09 12:16:18 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 08:47:05 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,6 @@
 #include "libft.h"
 #include <math.h>
 #include <SDL.h>
-
-int				choose_color(int tile)
-{
-	if (tile == 1)
-		return (0xFFF0);
-	else if (tile == 2)
-		return (0xFFF);
-	else if (tile == 3)
-		return (0xFF);
-	else
-		return (0xFFFFFF);
-}
 
 static void		check_ray_direction(t_wolf *w, double raydirx, double raydiry)
 {
@@ -55,7 +43,7 @@ static void		check_ray_direction(t_wolf *w, double raydirx, double raydiry)
 	}
 }
 
-static void		check_collision(t_wolf *w, int *side)
+static int		check_collision(t_wolf *w, int *side)
 {
 	int		hit;
 
@@ -77,26 +65,30 @@ static void		check_collision(t_wolf *w, int *side)
 		if (w->map[w->player.map.x][w->player.map.y] > 0)
 			hit = 1;
 	}
+	return (w->map[w->player.map.x][w->player.map.y]);
 }
 
-static void		put_line(t_wolf *w, int x, double xd)
+static void		put_line(t_wolf *w, int x, int xd, int text)
 {
-	int	y;
-	int	i;
-	int	yt;
+	int			y;
+	int			i;
+	int			*pixels;
+	SDL_Surface	*t;
 
+	t = w->text[text];
+	pixels = (int*)(w->text[text]->pixels);
 	i = w->ray.draw_start * W_WIDTH + x;
 	y = w->ray.draw_start;
 	while (y < w->ray.draw_end)
 	{
-		yt = (int)();
-		w->canvas.img[i] = w->text->pixels[yt * w->text->w + 0];//
+		double prog = (double)((double)(y - w->ray.yts) / (double)(w->ray.yte - w->ray.yts));
+		w->canvas.img[i] = pixels[(int)(((int)(prog * t->h)) * t->w) + xd];
 		i += W_WIDTH;
 		++y;
 	}
 }
 
-static void		ray_casting2(t_wolf *w, int side, int x)
+static void		ray_casting2(t_wolf *w, int side, int x, int text)
 {
 	if (!side)
 		w->player.pwdist = (w->player.map.x - w->player.pos.x
@@ -113,11 +105,13 @@ static void		ray_casting2(t_wolf *w, int side, int x)
 	w->ray.yte = w->ray.draw_end;
 	if (w->ray.draw_end >= W_GHEIGHT)
 		w->ray.draw_end = W_GHEIGHT - 1;
-	put_line(w, x);//
-	w->ray.color = choose_color(w->map[w->player.map.x][w->player.map.y]);
-	// bresenham(w, (t_point){x, w->ray.draw_start}, (t_point){x, w->ray.draw_end},
-		// side == 1 ? w->ray.color : (w->ray.color >> 1));
-	//remplacer bresenham par une fonction qui dessine en vertical, sans multiplication
+	double dx;//
+	if (side == 0)
+		dx = w->player.pos.y + w->player.pwdist * w->ray.raydiry;
+	else
+		dx = w->player.pos.x + w->player.pwdist * w->ray.raydirx;
+	dx -= (int)dx;
+	put_line(w, x, (int)(dx * w->text[0]->w), text);//
 }
 
 int				ray_casting(t_wolf *w)
@@ -125,6 +119,7 @@ int				ray_casting(t_wolf *w)
 	double	camx;
 	int		x;
 	int		side;
+	int		text;
 
 	x = 0;
 	while (x < W_WIDTH)
@@ -139,8 +134,8 @@ int				ray_casting(t_wolf *w)
 		w->player.deltadist.y = sqrt(1 + (w->ray.raydirx * w->ray.raydirx)
 			/ (w->ray.raydiry * w->ray.raydiry));
 		check_ray_direction(w, w->ray.raydirx, w->ray.raydiry);
-		check_collision(w, &side);
-		ray_casting2(w, side, x);
+		text = check_collision(w, &side);
+		ray_casting2(w, side, x, text);
 		++x;
 	}
 	return (0);

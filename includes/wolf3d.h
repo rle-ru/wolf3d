@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/09 12:12:50 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 08:47:14 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define W_GHEIGHT 380 // reserve 100px for hud
 # define W_GHEIGHT2 W_GHEIGHT * 0.5
 # define IMG_SIZE 4 * W_HEIGHT * W_WIDTH
+# define TEXTURES_N 11
 # include <stdint.h>
 # include <SDL.h>
 # include <SDL_image.h>
@@ -152,7 +153,7 @@ typedef struct		s_wolf
 	double			ms;
 	double			rs;
 	uint64_t		fps;
-	SDL_Surface		*text;
+	SDL_Surface		*text[TEXTURES_N];
 }					t_wolf;
 
 /*
@@ -209,10 +210,5 @@ int					draw(t_wolf *w);
 ** Ray casting function.
 */
 int					ray_casting(t_wolf *w);
-
-/*
-** Put pixels between two points
-*/
-void				bresenham(t_wolf *w, t_point o, t_point t, int color);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/09 16:35:15 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/10 08:49:26 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,25 +78,6 @@ static void	update_fps(t_wolf *w)
 	// printf("FPS :%llu\n", w->fps);
 }
 
-void		put_img(t_wolf *w)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < w->text->h)
-	{
-		x = 0;
-		while (x < w->text->w)
-		{
-			w->canvas.img[y * W_WIDTH + x] =
-				((int*)(w->text->pixels))[y * w->text->w + x];
-			++x;
-		}
-		++y;
-	}
-}
-
 int			draw(t_wolf *w)
 {
 	SDL_Event	event;
@@ -110,7 +91,6 @@ int			draw(t_wolf *w)
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
 		ray_casting(w);
-		// put_img(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
 			W_WIDTH * 4);
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);

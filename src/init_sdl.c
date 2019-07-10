@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/09 10:32:16 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 08:29:59 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,28 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+t_error	init_textures(t_wolf *w)
+{
+	if (!(w->text[0] = SDL_ConvertSurfaceFormat(IMG_Load("pics/colorstone.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
+		return (falloc);
+	if (!(w->text[1] = SDL_ConvertSurfaceFormat(IMG_Load("pics/eagle.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
+		return (falloc);
+	if (!(w->text[2] = SDL_ConvertSurfaceFormat(IMG_Load("pics/greystone.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
+		return (falloc);
+	if (!(w->text[3] = SDL_ConvertSurfaceFormat(IMG_Load("pics/mossy.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
+		return (falloc);
+	if (!(w->text[4] = SDL_ConvertSurfaceFormat(IMG_Load("pics/redbrick.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
+		return (falloc);
+	if (!(w->text[5] = SDL_ConvertSurfaceFormat(IMG_Load("pics/purplestone.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
+		return (falloc);
+	return (ok);
+}
+
 t_error	init_sdl(t_wolf *w)
 {
-	w->text = SDL_ConvertSurfaceFormat(IMG_Load("pics/colorstone.png"), SDL_PIXELFORMAT_ARGB8888, 0);
+
+	if (init_textures(w) != ok)
+		return (falloc);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		return (falloc);
 	w->canvas.window = SDL_CreateWindow(
