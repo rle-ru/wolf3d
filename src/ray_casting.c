@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/10 08:47:05 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 10:45:03 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 	int			i;
 	int			*pixels;
 	SDL_Surface	*t;
+	double		prog;
 
 	t = w->text[text];
 	pixels = (int*)(w->text[text]->pixels);
@@ -81,7 +82,8 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 	y = w->ray.draw_start;
 	while (y < w->ray.draw_end)
 	{
-		double prog = (double)((double)(y - w->ray.yts) / (double)(w->ray.yte - w->ray.yts));
+		prog = (double)((double)(y - w->ray.yts)
+			/ (double)(w->ray.yte - w->ray.yts));
 		w->canvas.img[i] = pixels[(int)(((int)(prog * t->h)) * t->w) + xd];
 		i += W_WIDTH;
 		++y;
@@ -90,6 +92,8 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 
 static void		ray_casting2(t_wolf *w, int side, int x, int text)
 {
+	double	dx;
+
 	if (!side)
 		w->player.pwdist = (w->player.map.x - w->player.pos.x
 			+ (1 - w->player.step.x) * 0.5) / w->ray.raydirx;
@@ -105,13 +109,12 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	w->ray.yte = w->ray.draw_end;
 	if (w->ray.draw_end >= W_GHEIGHT)
 		w->ray.draw_end = W_GHEIGHT - 1;
-	double dx;//
 	if (side == 0)
 		dx = w->player.pos.y + w->player.pwdist * w->ray.raydiry;
 	else
 		dx = w->player.pos.x + w->player.pwdist * w->ray.raydirx;
 	dx -= (int)dx;
-	put_line(w, x, (int)(dx * w->text[0]->w), text);//
+	put_line(w, x, (int)(dx * w->text[0]->w), text);
 }
 
 int				ray_casting(t_wolf *w)
