@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/10 08:47:05 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 13:55:00 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 	int			i;
 	int			*pixels;
 	SDL_Surface	*t;
+	double		prog;
 
 	t = w->text[text];
 	pixels = (int*)(w->text[text]->pixels);
@@ -81,7 +82,8 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 	y = w->ray.draw_start;
 	while (y < w->ray.draw_end)
 	{
-		double prog = (double)((double)(y - w->ray.yts) / (double)(w->ray.yte - w->ray.yts));
+		prog = (double)((double)(y - w->ray.yts)
+			/ (double)(w->ray.yte - w->ray.yts));
 		w->canvas.img[i] = pixels[(int)(((int)(prog * t->h)) * t->w) + xd];
 		i += W_WIDTH;
 		++y;
@@ -90,6 +92,10 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 
 static void		ray_casting2(t_wolf *w, int side, int x, int text)
 {
+	double	dx;
+	double	fxw;
+	double	fyw;
+
 	if (!side)
 		w->player.pwdist = (w->player.map.x - w->player.pos.x
 			+ (1 - w->player.step.x) * 0.5) / w->ray.raydirx;
@@ -105,13 +111,61 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	w->ray.yte = w->ray.draw_end;
 	if (w->ray.draw_end >= W_GHEIGHT)
 		w->ray.draw_end = W_GHEIGHT - 1;
-	double dx;//
 	if (side == 0)
 		dx = w->player.pos.y + w->player.pwdist * w->ray.raydiry;
 	else
 		dx = w->player.pos.x + w->player.pwdist * w->ray.raydirx;
 	dx -= (int)dx;
-	put_line(w, x, (int)(dx * w->text[0]->w), text);//
+	put_line(w, x, (int)(dx * w->text[text]->w), text);
+	if (side == 0 && w->ray.raydirx > 0)
+	{
+		fxw = w->player.map.x;
+		fyw = w->player.map.y + dx;
+	}
+	else if (side == 0 && w->ray.raydirx < 0)
+	{
+		fxw = w->player.map.x + 1.0;
+		fyw = w->player.map.y + dx;
+	}
+	else if (side == 1 && w->ray.raydiry > 0)
+	{
+		fxw = w->player.map.x + dx;
+		fyw = w->player.map.y;
+	}
+	else
+	{
+		fxw = w->player.map.x + dx;
+		fyw = w->player.map.y + 1.0;
+	}
+	//
+	//
+	double	dw;
+	double	dp;
+	double	cd;
+	double	cfx;
+	double	cfy;
+	double	weight;
+	int		y;
+	int		ftx;
+	int		fty;
+
+	dw = w->player.pwdist;
+	dp = 0.0;
+	if (w->ray.draw_end < 0)
+		w->ray.draw_end = W_GHEIGHT;
+	y = w->ray.draw_end + 1;
+	while (y < W_GHEIGHT)
+	{
+		cd = W_GHEIGHT / (2.0 * y - W_GHEIGHT);
+		weight = (cd - dp) / (dw - dp);
+		cfx = weight * fxw + (1.0 - weight) * w->player.pos.x;
+		cfy = weight * fyw + (1.0 - weight) * w->player.pos.y;
+		ftx = (int)(cfx * w->text[0]->w) % w->text[0]->w;
+		fty = (int)(cfy * w->text[0]->h) % w->text[0]->h;
+		w->canvas.img[(int)(y * W_WIDTH + x)] = ((int*)(w->text[0]->pixels))[fty * w->text[0]->w + ftx];
+		w->canvas.img[(int)((W_GHEIGHT - y) * W_WIDTH + x)] = ((int*)(w->text[6]->pixels))[fty * w->text[6]->w + ftx];
+		++y;
+	}
 }
 
 int				ray_casting(t_wolf *w)
