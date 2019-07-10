@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/10 10:45:03 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 11:48:40 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 static void		ray_casting2(t_wolf *w, int side, int x, int text)
 {
 	double	dx;
+	double	fxw;
+	double	fyw;
 
 	if (!side)
 		w->player.pwdist = (w->player.map.x - w->player.pos.x
@@ -115,6 +117,54 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 		dx = w->player.pos.x + w->player.pwdist * w->ray.raydirx;
 	dx -= (int)dx;
 	put_line(w, x, (int)(dx * w->text[0]->w), text);
+	if (side == 0 && w->ray.raydirx > 0)
+	{
+		fxw = w->player.map.x;
+		fyw = w->player.map.y + dx;
+	}
+	else if (side == 0 && w->ray.raydirx < 0)
+	{
+		fxw = w->player.map.x + 1.;
+		fyw = w->player.map.y + dx;
+	}
+	else if (side == 1 && w->ray.raydirx > 0)
+	{
+		fxw = w->player.map.x + dx;
+		fyw = w->player.map.y;
+	}
+	else
+	{
+		fxw = w->player.map.x + dx;
+		fyw = w->player.map.y + 1.;
+	}
+	//
+	//
+	double	dw;
+	double	dp;
+	double	cd;
+	double	cfx;
+	double	cfy;
+	double	weight;
+	int		y;
+	int		ftx;
+	int		fty;
+
+	dw = w->player.pwdist;
+	dp = 0;
+	if (w->ray.draw_end < 0)
+		w->ray.draw_end = W_GHEIGHT;
+	y = w->ray.draw_end + 1;
+	while (y < W_GHEIGHT)
+	{
+		cd = W_GHEIGHT / (2.0 * y - W_GHEIGHT);
+		weight = (cd - dp) / (dw - dp);
+		cfx = weight * fxw + (1.0 - weight) * w->player.pos.x;
+		cfy = weight * fyw + (1.0 - weight) * w->player.pos.y;
+		ftx = (int)(cfx * w->text[0]->w) % w->text[0]->w;
+		fty = (int)(cfy * w->text[0]->h) % w->text[0]->h;
+		w->canvas.img[(int)(y * W_WIDTH + x)] = ((int*)(w->text[0]->pixels))[fty * w->text[0]->w + ftx];
+		++y;
+	}
 }
 
 int				ray_casting(t_wolf *w)
