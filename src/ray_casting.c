@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/10 11:48:40 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 12:42:50 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	}
 	else if (side == 0 && w->ray.raydirx < 0)
 	{
-		fxw = w->player.map.x + 1.;
+		fxw = w->player.map.x + 1;
 		fyw = w->player.map.y + dx;
 	}
 	else if (side == 1 && w->ray.raydirx > 0)
@@ -135,7 +135,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	else
 	{
 		fxw = w->player.map.x + dx;
-		fyw = w->player.map.y + 1.;
+		fyw = w->player.map.y + 1;
 	}
 	//
 	//
@@ -163,6 +163,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 		ftx = (int)(cfx * w->text[0]->w) % w->text[0]->w;
 		fty = (int)(cfy * w->text[0]->h) % w->text[0]->h;
 		w->canvas.img[(int)(y * W_WIDTH + x)] = ((int*)(w->text[0]->pixels))[fty * w->text[0]->w + ftx];
+		w->canvas.img[(int)((W_GHEIGHT - y) * W_WIDTH + x)] = ((int*)(w->text[6]->pixels))[fty * w->text[6]->w + ftx];
 		++y;
 	}
 }
