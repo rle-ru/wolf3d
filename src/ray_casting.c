@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/10 12:42:50 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 13:25:26 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,10 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	}
 	else if (side == 0 && w->ray.raydirx < 0)
 	{
-		fxw = w->player.map.x + 1;
+		fxw = w->player.map.x + 1.0;
 		fyw = w->player.map.y + dx;
 	}
-	else if (side == 1 && w->ray.raydirx > 0)
+	else if (side == 1 && w->ray.raydiry > 0)
 	{
 		fxw = w->player.map.x + dx;
 		fyw = w->player.map.y;
@@ -135,7 +135,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	else
 	{
 		fxw = w->player.map.x + dx;
-		fyw = w->player.map.y + 1;
+		fyw = w->player.map.y + 1.0;
 	}
 	//
 	//
@@ -150,7 +150,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	int		fty;
 
 	dw = w->player.pwdist;
-	dp = 0;
+	dp = 0.0;
 	if (w->ray.draw_end < 0)
 		w->ray.draw_end = W_GHEIGHT;
 	y = w->ray.draw_end + 1;
