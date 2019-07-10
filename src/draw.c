@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 08:49:26 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 08:50:30 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 #include <stdio.h>
 
-static void	update_hooks2(t_wolf *w)
+static void	update_hooks2(t_wolf *w, const uint8_t *s)
 {
 	if (s[SDL_SCANCODE_UP])
 	{
@@ -64,7 +64,7 @@ static void	update_hooks(t_wolf *w)
 		w->player.plane.x = opx * cos(-w->rs) - w->player.plane.y * sin(-w->rs);
 		w->player.plane.y = opx * sin(-w->rs) + w->player.plane.y * cos(-w->rs);
 	}
-	return (update_hooks2(w));
+	return (update_hooks2(w, s));
 }
 
 static void	update_fps(t_wolf *w)
@@ -75,7 +75,6 @@ static void	update_fps(t_wolf *w)
 	w->fps = (1 / w->ft);
 	w->ms = w->ft * 5.0;
 	w->rs = w->ft * 3.0;
-	// printf("FPS :%llu\n", w->fps);
 }
 
 int			draw(t_wolf *w)
