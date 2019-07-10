@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/08 13:44:05 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 11:20:53 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 	return ((w->parser.player == true) ? ok : ok);//better return value for no player
 }
 
+static void		init_wolf(t_wolf *w)
+{
+	w->player.dir.x = -1;
+	w->player.dir.y = -0;
+	w->player.plane.x = 0;
+	w->player.plane.y = 0.66;
+}
+
 t_error			ft_create_map(t_wolf *w)
 {
 	int		y;
@@ -76,12 +84,7 @@ t_error			ft_create_map(t_wolf *w)
 		ft_memdel((void**)&tmp);
 		w->parser.lines = line;
 	}
-
-	w->player.dir.x = -1;//Deplacer tout ca, peut-etre init_wolf
-	w->player.dir.y = -0;
-	w->player.plane.x = 0;
-	w->player.plane.y = 0.66;//
-
+	init_wolf(w);
 	w->parser.lines = NULL;
 	w->parser.last_line = NULL;
 	return (ok);

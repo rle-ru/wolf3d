@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 08:50:30 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 11:19:28 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ static void	update_hooks2(t_wolf *w, const uint8_t *s)
 {
 	if (s[SDL_SCANCODE_UP])
 	{
-		if (!w->map[(int)(w->player.pos.x + w->player.dir.x * w->ms)]
+		if (!w->map[(int)(w->player.pos.x + w->player.dir.x * w->ms + 0.25)]
 			[(int)w->player.pos.y])
 			w->player.pos.x += w->player.dir.x * w->ms;
 		if (!w->map[(int)w->player.pos.x]
-			[(int)(w->player.pos.y + w->player.dir.y * w->ms)])
+			[(int)(w->player.pos.y + w->player.dir.y * w->ms + 0.25)])
 			w->player.pos.y += w->player.dir.y * w->ms;
 	}
 	if (s[SDL_SCANCODE_DOWN])
 	{
-		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms)]
+		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms + 0.25)]
 			[(int)w->player.pos.y])
 			w->player.pos.x -= w->player.dir.x * w->ms;
 		if (!w->map[(int)w->player.pos.x]
-			[(int)(w->player.pos.y - w->player.dir.y * w->ms)])
+			[(int)(w->player.pos.y - w->player.dir.y * w->ms + 0.25)])
 			w->player.pos.y -= w->player.dir.y * w->ms;
 	}
 	return ;
@@ -57,7 +57,7 @@ static void	update_hooks(t_wolf *w)
 		w->player.plane.x = opx * cos(w->rs) - w->player.plane.y * sin(w->rs);
 		w->player.plane.y = opx * sin(w->rs) + w->player.plane.y * cos(w->rs);
 	}
-	if (s[SDL_SCANCODE_RIGHT])
+	else if (s[SDL_SCANCODE_RIGHT])
 	{
 		w->player.dir.x = odx * cos(-w->rs) - w->player.dir.y * sin(-w->rs);
 		w->player.dir.y = odx * sin(-w->rs) + w->player.dir.y * cos(-w->rs);
