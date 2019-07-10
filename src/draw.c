@@ -6,7 +6,7 @@
 /*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 14:10:25 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/10 15:54:55 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,24 @@
 
 static void	update_hooks2(t_wolf *w, const uint8_t *s)
 {
+	double			tmp;
+
 	if (s[SDL_SCANCODE_UP])
 	{
-		if (!w->map[(int)(w->player.pos.x + w->player.dir.x * w->ms + 0.25)]
-			[(int)w->player.pos.y])
+		tmp = w->player.pos.x + w->player.dir.x * w->ms + 0.25;
+		if (!w->map[(int)tmp][(int)w->player.pos.y] && tmp > 1.5)
 			w->player.pos.x += w->player.dir.x * w->ms;
-		if (!w->map[(int)w->player.pos.x]
-			[(int)(w->player.pos.y + w->player.dir.y * w->ms + 0.25)])
+		tmp = w->player.pos.y + w->player.dir.y * w->ms + 0.25;
+		if (!w->map[(int)w->player.pos.x][(int)tmp] && tmp > 1.5)
 			w->player.pos.y += w->player.dir.y * w->ms;
 	}
-	if (s[SDL_SCANCODE_DOWN])
+	else if (s[SDL_SCANCODE_DOWN])
 	{
-		if (!w->map[(int)(w->player.pos.x - w->player.dir.x * w->ms + 0.25)]
-			[(int)w->player.pos.y])
+		tmp = w->player.pos.x - w->player.dir.x * w->ms + 0.25;
+		if (!w->map[(int)tmp][(int)w->player.pos.y] && tmp > 1.5)
 			w->player.pos.x -= w->player.dir.x * w->ms;
-		if (!w->map[(int)w->player.pos.x]
-			[(int)(w->player.pos.y - w->player.dir.y * w->ms + 0.25)])
+		tmp = w->player.pos.y - w->player.dir.y * w->ms + 0.25;
+		if (!w->map[(int)w->player.pos.x][(int)tmp] && tmp > 1.5)
 			w->player.pos.y -= w->player.dir.y * w->ms;
 	}
 	return ;
@@ -49,7 +51,7 @@ static void	update_hooks(t_wolf *w)
 	odx = w->player.dir.x;
 	opx = w->player.plane.x;
 	if (s[SDL_SCANCODE_ESCAPE])
-		exit(0);//
+		leave(ok, w);
 	if (s[SDL_SCANCODE_LEFT])
 	{
 		w->player.dir.x = odx * cos(w->rs) - w->player.dir.y * sin(w->rs);
