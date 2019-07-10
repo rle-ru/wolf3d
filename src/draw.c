@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 08:50:30 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 13:58:08 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	update_hooks(t_wolf *w)
 		w->player.plane.x = opx * cos(w->rs) - w->player.plane.y * sin(w->rs);
 		w->player.plane.y = opx * sin(w->rs) + w->player.plane.y * cos(w->rs);
 	}
-	if (s[SDL_SCANCODE_RIGHT])
+	else if (s[SDL_SCANCODE_RIGHT])
 	{
 		w->player.dir.x = odx * cos(-w->rs) - w->player.dir.y * sin(-w->rs);
 		w->player.dir.y = odx * sin(-w->rs) + w->player.dir.y * cos(-w->rs);

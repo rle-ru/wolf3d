@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 12:42:26 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 14:03:20 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_error	init_textures(t_wolf *w)
 	if (!(w->text[5] = SDL_ConvertSurfaceFormat(IMG_Load("pics/purplestone.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
 		return (falloc);
 	if (!(w->text[6] = SDL_ConvertSurfaceFormat(IMG_Load("pics/wood.png"), SDL_PIXELFORMAT_ARGB8888, 0)))
+		return (falloc);
+	if (!(w->text[7] = SDL_ConvertSurfaceFormat(IMG_Load("pics/jesuc.jpg"), SDL_PIXELFORMAT_ARGB8888, 0)))
 		return (falloc);
 	return (ok);
 }

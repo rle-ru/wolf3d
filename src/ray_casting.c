@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/10 13:25:26 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/10 13:55:00 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	else
 		dx = w->player.pos.x + w->player.pwdist * w->ray.raydirx;
 	dx -= (int)dx;
-	put_line(w, x, (int)(dx * w->text[0]->w), text);
+	put_line(w, x, (int)(dx * w->text[text]->w), text);
 	if (side == 0 && w->ray.raydirx > 0)
 	{
 		fxw = w->player.map.x;
