@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 17:26:15 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 01:18:08 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "libft.h"
 #include <math.h>
 #include <SDL.h>
+
+#include <stdio.h>
 
 static void	update_hooks2(t_wolf *w, const uint8_t *s)
 {
@@ -102,7 +104,7 @@ static void	IMPORTANT_THINGS(t_wolf *w)
 			int tmp = (((double)y - (double)ys) / 100.0) * w->text[8 + w->head]->h;
 			w->canvas.img[y * W_WIDTH + x] 
 				= ((int*)(w->text[8 + w->head]->pixels))[tmp * w->text[8 + w->head]->w + (int)((double)((x - sx) / 100.0) * w->text[8 + w->head]->w)];
-				++x;
+			++x;
 		}
 		++y;
 	}
@@ -120,7 +122,8 @@ int			draw(t_wolf *w)
 			break ;
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
-		ray_casting(w);
+		ray_casting(w);	
+		minimap(w);
 		IMPORTANT_THINGS(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
 			W_WIDTH * 4);

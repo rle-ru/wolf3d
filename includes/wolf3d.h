@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 16:44:50 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/11 23:28:53 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define W_GHEIGHT (W_HEIGHT - 100) // reserve 100px for hud
 # define W_GHEIGHT2 W_GHEIGHT * 0.5
 # define IMG_SIZE 4 * W_HEIGHT * W_WIDTH
-# define TEXTURES_N 11
+# define TEXTURES_N 10
 # include <stdint.h>
 # include <SDL.h>
 # include <SDL_image.h>
@@ -213,5 +213,10 @@ int					draw(t_wolf *w);
 ** Ray casting function.
 */
 int					ray_casting(t_wolf *w);
+
+/*
+** Minimap function.
+*/
+void				minimap(t_wolf *w);
 
 #endif
