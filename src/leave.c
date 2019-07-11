@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   leave.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 12:01:44 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 11:27:24 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/11 16:26:06 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void		ft_print_error(t_error ret, t_wolf *w)
 		ft_fdprintf(STDERR_FILENO, "A malloc failed\n");
 	else if (ret == badline)
 		ft_fdprintf(STDERR_FILENO, "Incorrect line : %d\n", w->height);
+	else if (ret == noplayer)
+		ft_fdprintf(STDERR_FILENO, "No player in map\n", w->height);
 }
 
 static void		ft_clear(t_wolf *w)
