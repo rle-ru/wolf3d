@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 15:54:55 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/11 09:49:21 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,36 @@
 #include <math.h>
 #include <SDL.h>
 
-#include <stdio.h>
-
 static void	update_hooks2(t_wolf *w, const uint8_t *s)
 {
 	double			tmp;
+	double			dir2;
 
 	if (s[SDL_SCANCODE_UP])
 	{
-		tmp = w->player.pos.x + w->player.dir.x * w->ms + 0.25;
-		if (!w->map[(int)tmp][(int)w->player.pos.y] && tmp > 1.5)
-			w->player.pos.x += w->player.dir.x * w->ms;
-		tmp = w->player.pos.y + w->player.dir.y * w->ms + 0.25;
-		if (!w->map[(int)w->player.pos.x][(int)tmp] && tmp > 1.5)
-			w->player.pos.y += w->player.dir.y * w->ms;
+		dir2 = w->player.dir.x;
+		dir2 += (dir2 < 0 ? -20 : 20);
+		if ((tmp = w->player.pos.x + dir2 * w->ms) >= 0 && (int)tmp < w->width)
+			if (!w->map[(int)(tmp)][(int)w->player.pos.y])
+				w->player.pos.x += w->player.dir.x * w->ms;
+		dir2 = w->player.dir.y;
+		dir2 += (dir2 < 0 ? -20 : 20);
+		if ((tmp = w->player.pos.y + dir2 * w->ms) >= 0 && (int)tmp < w->height)
+			if (!w->map[(int)w->player.pos.x][(int)(tmp)])
+				w->player.pos.y += w->player.dir.y * w->ms;
 	}
 	else if (s[SDL_SCANCODE_DOWN])
 	{
-		tmp = w->player.pos.x - w->player.dir.x * w->ms + 0.25;
-		if (!w->map[(int)tmp][(int)w->player.pos.y] && tmp > 1.5)
-			w->player.pos.x -= w->player.dir.x * w->ms;
-		tmp = w->player.pos.y - w->player.dir.y * w->ms + 0.25;
-		if (!w->map[(int)w->player.pos.x][(int)tmp] && tmp > 1.5)
-			w->player.pos.y -= w->player.dir.y * w->ms;
+		dir2 = w->player.dir.x;
+		dir2 += (dir2 < 0 ? -20 : 20);
+		if ((tmp = w->player.pos.x - dir2 * w->ms) >= 0 && (int)tmp < w->width)
+			if (!w->map[(int)(tmp)][(int)w->player.pos.y])
+				w->player.pos.x -= w->player.dir.x * w->ms;
+		dir2 = w->player.dir.y;
+		dir2 += (dir2 < 0 ? -20 : 20);
+		if ((tmp = w->player.pos.y - dir2 * w->ms) >= 0 && (int)tmp < w->height)
+			if (!w->map[(int)w->player.pos.x][(int)(tmp)])
+				w->player.pos.y -= w->player.dir.y * w->ms;
 	}
 	return ;
 }
