@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 11:26:26 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/11 14:37:02 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
-# define W_WIDTH 640
+# define W_WIDTH 680
 # define W_WIDTH2 W_WIDTH * 0.5
 # define W_HEIGHT 480
-# define W_GHEIGHT 380 // reserve 100px for hud
+# define W_GHEIGHT (W_HEIGHT - 100) // reserve 100px for hud
 # define W_GHEIGHT2 W_GHEIGHT * 0.5
 # define IMG_SIZE 4 * W_HEIGHT * W_WIDTH
 # define TEXTURES_N 11
+// # define FAC (W_HEIGHT / 100 + W_WIDTH / 100)
+# define FAC (10)
 # include <stdint.h>
 # include <SDL.h>
 # include <SDL_image.h>
