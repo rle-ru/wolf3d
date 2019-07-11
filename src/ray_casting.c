@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/11 14:39:02 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/11 15:10:30 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,11 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 		weight = (cd - dp) / (dw - dp);
 		cfx = weight * fxw + (1.0 - weight) * w->player.pos.x;
 		cfy = weight * fyw + (1.0 - weight) * w->player.pos.y;
+		ftx = (int)(cfx * w->text[0]->w) % w->text[0]->w;
+		fty = (int)(cfy * w->text[0]->h) % w->text[0]->h;
+		w->canvas.img[(int)(y * W_WIDTH + x)] = ((int*)(w->text[0]->pixels))[fty * w->text[0]->w + ftx];
 		ftx = (int)(cfx * w->text[7]->w) % w->text[7]->w;
 		fty = (int)(cfy * w->text[7]->h) % w->text[7]->h;
-		w->canvas.img[(int)(y * W_WIDTH + x)] = ((int*)(w->text[7]->pixels))[fty * w->text[7]->w + ftx];
 		w->canvas.img[(int)((W_GHEIGHT - y) * W_WIDTH + x)] = ((int*)(w->text[7]->pixels))[fty * w->text[7]->w + ftx];
 		++y;
 	}
