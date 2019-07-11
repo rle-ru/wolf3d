@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 14:44:02 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/11 17:26:15 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,37 @@ static void	update_fps(t_wolf *w)
 	w->rs = w->ft * 3.0;
 }
 
+static void	IMPORTANT_THINGS(t_wolf *w)
+{
+	int	sx;
+	int	ex;
+	int	y;
+	int	ys;
+	int	x;
+
+	if (w->pc > 100)
+		w->head ^= 1;
+	if (w ->pc > 100)
+		w->pc = 0;
+	w->pc++;
+	sx = W_WIDTH / 2 - 50;
+	ex = sx + 100;
+	y = W_GHEIGHT + 1;
+	ys = y;
+	while (y < W_HEIGHT)
+	{
+		x = sx;
+		while (x < ex)
+		{
+			int tmp = (((double)y - (double)ys) / 100.0) * w->text[8 + w->head]->h;
+			w->canvas.img[y * W_WIDTH + x] 
+				= ((int*)(w->text[8 + w->head]->pixels))[tmp * w->text[8 + w->head]->w + (int)((double)((x - sx) / 100.0) * w->text[8 + w->head]->w)];
+				++x;
+		}
+		++y;
+	}
+}
+
 int			draw(t_wolf *w)
 {
 	SDL_Event	event;
@@ -90,6 +121,7 @@ int			draw(t_wolf *w)
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
 		ray_casting(w);
+		IMPORTANT_THINGS(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
 			W_WIDTH * 4);
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
