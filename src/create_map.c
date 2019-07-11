@@ -6,7 +6,7 @@
 /*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 14:56:53 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/11 16:04:19 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 #include <stdlib.h>
 
 #include <stdio.h>
+
+static t_error	check_player_spawn(t_wolf *w, int x, int y, int *lpos)
+{
+	if (w->parser.player == true)
+		return (badline); // same as below
+	w->player.pos.x = (double)x;
+	w->player.pos.y = (double)y;
+	++*lpos;
+	w->parser.player = true;
+	w->map[x][y] = 0;
+	return (ok);
+}
 
 static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 {
@@ -29,13 +41,8 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 			++lpos;
 		if (line->line[lpos] == 'P')
 		{
-			if (w->parser.player == true)
-				return (badline); // same as below
-			w->player.pos.x = (double)x;
-			w->player.pos.y = (double)y;
-			++lpos;
-			w->parser.player = true;
-			w->map[x][y] = 0;
+			if (check_player_spawn(w, x, y, &lpos) == badline)
+				return (badline);
 			continue ;
 		}
 		w->map[x][y] = ft_atoi(line->line + lpos);
@@ -43,7 +50,7 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 				|| line->line[lpos] == '-'))
 			++lpos;
 	}
-	return ((w->parser.player == true) ? ok : ok);//better return value for no player
+	return (!(y == w->height - 1 && w->parser.player == false) ? ok : noplayer); //check if there is a spawnpoint
 }
 
 static void		init_wolf(t_wolf *w)
@@ -56,9 +63,12 @@ static void		init_wolf(t_wolf *w)
 
 static t_error	fill_map(t_wolf *w)
 {
+	t_error	ret;
 	t_line	*tmp;
 	t_line	*line;
+	int		y;
 
+	y = -1;
 	line = w->parser.lines;
 	while (++y < w->height && line != NULL)
 	{
@@ -70,16 +80,14 @@ static t_error	fill_map(t_wolf *w)
 		ft_memdel((void**)&tmp);
 		w->parser.lines = line;
 	}
-	return (ok);
+	return (ret);
 }
 
 t_error			ft_create_map(t_wolf *w)
 {
 	t_error	ret;
-	int		y;
 	int		i;
 
-	y = -1;
 	w->width = w->parser.lines->nbx;
 	if (!(w->map = malloc(w->width * sizeof(int*))))
 		return (falloc);
@@ -92,10 +100,10 @@ t_error			ft_create_map(t_wolf *w)
 	}
 	// if (!(w->map = malloc(w->width * w->height * sizeof(int))))
 	// 	return (falloc);
-	if (fill_map(w) != ok)
-		return (badline);
+	if ((ret = fill_map(w)) != ok)
+		return (ret);
 	init_wolf(w);
 	w->parser.lines = NULL;
 	w->parser.last_line = NULL;
-	return (ok);
+	return (ret);
 }
