@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 16:04:19 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/11 16:33:49 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 #include "wolf3d.h"
 #include <stdlib.h>
 
-#include <stdio.h>
-
 static t_error	check_player_spawn(t_wolf *w, int x, int y, int *lpos)
 {
 	if (w->parser.player == true)
-		return (badline); // same as below
+		return (badline);
 	w->player.pos.x = (double)x;
 	w->player.pos.y = (double)y;
 	++*lpos;
@@ -32,6 +30,7 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 {
 	int		x;
 	int		lpos;
+	int		tmp;
 
 	x = -1;
 	lpos = 0;
@@ -45,12 +44,16 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 				return (badline);
 			continue ;
 		}
-		w->map[x][y] = ft_atoi(line->line + lpos);
+		tmp = ft_atoi(line->line + lpos);
+		if (x == 0 || y == 0 || y == w->height - 1 || x == w->width - 1)
+			tmp = !tmp ? 1 : tmp;
+		tmp = tmp >= TEXTURES_N || tmp < 0 ? 1 : tmp;
+		w->map[x][y] = tmp;
 		while (line->line[lpos] && (ft_isdigit(line->line[lpos])
 				|| line->line[lpos] == '-'))
 			++lpos;
 	}
-	return (!(y == w->height - 1 && w->parser.player == false) ? ok : noplayer); //check if there is a spawnpoint
+	return (!(y == w->height - 1 && w->parser.player == false) ? ok : noplayer);
 }
 
 static void		init_wolf(t_wolf *w)
@@ -98,8 +101,6 @@ t_error			ft_create_map(t_wolf *w)
 			return (falloc);
 		++i;
 	}
-	// if (!(w->map = malloc(w->width * w->height * sizeof(int))))
-	// 	return (falloc);
 	if ((ret = fill_map(w)) != ok)
 		return (ret);
 	init_wolf(w);
