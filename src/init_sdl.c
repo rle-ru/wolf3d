@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 19:20:05 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 19:26:57 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_error	init_textures(t_wolf *w)
 	error |= load_texture(w, "pics/redbrick.xpm", 4);
 	error |= load_texture(w, "pics/purplestone.xpm", 5);
 	error |= load_texture(w, "pics/wood.xpm", 6);
-	error |= load_texture(w, "pics/jesuc.jpg", 7);
+	error |= load_texture(w, "pics/jesuc.xpm", 7);
 	error |= load_texture(w, "pics/rle-ru_right.xpm", 8);
 	error |= load_texture(w, "pics/rle-ru_left.xpm", 9);
 	return (error);
