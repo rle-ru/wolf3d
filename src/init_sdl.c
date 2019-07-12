@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 10:18:44 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 18:39:10 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-static int		load_texture(t_wolf *w, char *path, int pos)
+static t_error		load_texture(t_wolf *w, char *path, int pos)
 {
 	SDL_Surface	*tmp;
-	
 	if (!(tmp = IMG_Load(path)))
 		return (falloc);
 	if (!(w->text[pos] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_ARGB8888, 0)))
@@ -28,7 +27,7 @@ static int		load_texture(t_wolf *w, char *path, int pos)
 
 static t_error	init_textures(t_wolf *w)
 {
-	int	error;
+	t_error	error;
 
 	error = 0;
 	error |= load_texture(w, "pics/colorstone.png", 0);
@@ -37,10 +36,10 @@ static t_error	init_textures(t_wolf *w)
 	error |= load_texture(w, "pics/mossy.png", 3);
 	error |= load_texture(w, "pics/redbrick.png", 4);
 	error |= load_texture(w, "pics/purplestone.png", 5);
-	error |= load_texture(w, "pics/wood.png", 6);
+	error |= load_texture(w, "pics/wood.xpm", 6);
 	error |= load_texture(w, "pics/jesuc.jpg", 7);
-	error |= load_texture(w, "pics/rle-ru_right.png", 8);
-	error |= load_texture(w, "pics/rle-ru_left.png", 9);
+	error |= load_texture(w, "pics/rle-ru_right.xpm", 8);
+	error |= load_texture(w, "pics/rle-ru_left.xpm", 9);
 	return (error);
 }
 
@@ -49,6 +48,7 @@ t_error	init_sdl(t_wolf *w)
 
 	if (init_textures(w) != ok)
 		return (falloc);
+		printf("Loaded texture nlol\n");
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		return (falloc);
 	if (!(w->canvas.window = SDL_CreateWindow(

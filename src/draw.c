@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 09:40:07 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 11:44:40 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,24 @@ static void	IMPORTANT_THINGS(t_wolf *w)
 	}
 }
 
+static void	draw_hud(t_wolf *w)
+{
+	int	x;
+	int	y;
+
+	y = W_GHEIGHT + 1;
+	while (y < W_HEIGHT)
+	{
+		x = 0;
+		while (x < W_WIDTH)
+		{
+			w->canvas.img[y * W_WIDTH + x] = 0xFF;
+			++x;
+		}
+		++y;
+	}
+}
+
 int			draw(t_wolf *w)
 {
 	SDL_Event	event;
@@ -124,6 +142,7 @@ int			draw(t_wolf *w)
 		update_hooks(w);
 		ray_casting(w);	
 		minimap(w);
+		draw_hud(w);
 		IMPORTANT_THINGS(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
 			W_WIDTH * 4);
