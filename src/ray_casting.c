@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/12 19:40:58 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 21:25:29 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ static int		check_collision(t_wolf *w, int *side)
 		{
 			w->player.sidedist.x += w->player.deltadist.x;
 			w->player.map.x += w->player.step.x;
-			*side = 0;
+			*side = ((w->player.pos.x < w->player.map.x) ? 0 : 2);
 		}
 		else
 		{
 			w->player.sidedist.y += w->player.deltadist.y;
 			w->player.map.y += w->player.step.y;
-			*side = 1;
+			*side = ((w->player.pos.y < w->player.map.y	) ? 1 : 3);
 		}
 		if (w->player.map.x < 0 || w->player.map.x >= w->width || w->player.map.y < 0 || w->player.map.y >= w->height)
 			return (INT_MIN);
@@ -98,7 +98,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	double	fxw;
 	double	fyw;
 
-	if (!side)
+	if (!(side % 2))
 		w->player.pwdist = (w->player.map.x - w->player.pos.x
 			+ (1 - w->player.step.x) * 0.5) / w->ray.raydirx;
 	else
@@ -113,23 +113,24 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	w->ray.yte = w->ray.draw_end;
 	if (w->ray.draw_end >= W_GHEIGHT)
 		w->ray.draw_end = W_GHEIGHT;
-	if (side == 0)
+	if (side % 2 == 0)
 		dx = w->player.pos.y + w->player.pwdist * w->ray.raydiry;
 	else
 		dx = w->player.pos.x + w->player.pwdist * w->ray.raydirx;
 	dx -= (int)dx;
-	put_line(w, x, (int)(dx * w->text[text]->w), text);
-	if (side == 0 && w->ray.raydirx > 0)
+	int	text2 = (((text + side) > TEXTURES_N - 1) ? (TEXTURES_N - 1) : (text + side));
+	put_line(w, x, (int)(dx * w->text[text2]->w), text2);
+	if (side % 2 == 0 && w->ray.raydirx > 0)
 	{
 		fxw = w->player.map.x;
 		fyw = w->player.map.y + dx;
 	}
-	else if (side == 0 && w->ray.raydirx < 0)
+	else if (side % 2 == 0 && w->ray.raydirx < 0)
 	{
 		fxw = w->player.map.x + 1.0;
 		fyw = w->player.map.y + dx;
 	}
-	else if (side == 1 && w->ray.raydiry > 0)
+	else if (side % 2 == 1 && w->ray.raydiry > 0)
 	{
 		fxw = w->player.map.x + dx;
 		fyw = w->player.map.y;
