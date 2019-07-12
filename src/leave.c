@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 12:01:44 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 16:26:06 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 10:20:30 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,34 @@ static void		ft_print_error(t_error ret, t_wolf *w)
 		ft_fdprintf(STDERR_FILENO, "No player in map\n", w->height);
 }
 
+static void		free_map(t_wolf *w)
+{
+	int	y;
+
+	y = 0;
+	while (y < w->height)
+	{
+		ft_memdel((void**)&w->map[y]);
+		++y;
+	}
+	ft_memdel((void**)(&w->map));
+}
+
 static void		ft_clear(t_wolf *w)
 {
+	int	i;
+
+	i = 0;
+	while (i < TEXTURES_N)
+		SDL_FreeSurface(w->text[i++]);
 	if (w->parser.lines)
 		free_lines(w);
-	// if (w->map)
-	// 	free(w->map);
+	if (w->map)
+		free_map(w);
+	ft_memdel((void**)w->canvas.img);
+	SDL_DestroyWindow(w->canvas.window);
+	SDL_DestroyRenderer(w->canvas.renderer);
+	SDL_Quit();
 }
 
 int				leave(t_error ret, t_wolf *w)
@@ -46,10 +68,4 @@ int				leave(t_error ret, t_wolf *w)
 	ft_print_error(ret, w);
 	ft_clear(w);
 	exit(0);
-}
-
-int				hook_leave(t_wolf *w)
-{
-	leave(ok, w);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 11:53:02 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/06/22 08:25:30 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 09:49:25 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_error	ft_open_file(int ac, char **av, t_parser *parser)
 {
-	if (ac == 1)
+	if (ac != 2)
 		return (usage);
 	parser->fname = av[1];
 	if (!ft_strcmp(av[1], "/dev/zero"))

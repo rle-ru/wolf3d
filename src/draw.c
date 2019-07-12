@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 01:18:08 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/12 09:40:07 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,5 @@ int			draw(t_wolf *w)
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
 		SDL_RenderPresent(w->canvas.renderer);
 	}
-	free(w->canvas.img);
-	SDL_DestroyRenderer(w->canvas.renderer);
-	SDL_Quit();
 	return (0);
 }

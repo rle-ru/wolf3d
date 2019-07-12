@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 16:33:49 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 09:34:15 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_error			ft_create_map(t_wolf *w)
 	int		i;
 
 	w->width = w->parser.lines->nbx;
-	if (!(w->map = malloc(w->width * sizeof(int*))))
+	if (!(w->map = ft_memalloc(w->width * sizeof(int*))))
 		return (falloc);
 	i = 0;
 	while (i < w->width)

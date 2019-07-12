@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 08:11:48 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/10 11:27:05 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/12 09:51:07 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int		main(int ac, char **av)
 	if ((ret = init_sdl(&w)) != ok)
 		leave(ret, &w);
 	draw(&w);
-	// ft_init_wolf(&w);// return values ?	
+	leave(ok, &w);
 	return (0);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/26 14:17:52 by rle-ru            #+#    #+#              #
-#    Updated: 2019/07/11 23:28:40 by dacuvill         ###   ########.fr        #
+#    Updated: 2019/07/12 09:58:11 by rle-ru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ LIBFILES			:=	$(foreach LIB, $(LIBS), $(LIB)/$(notdir $(LIB)).a)
 CC					=	clang
 
 CFLAGS				+=	-Wall -Werror -Wextra $(shell pkg-config --cflags SDL2 SDL2_image SDL2_ttf) \
-						-g -fsanitize=address
+						-flto -Ofast -g
 
 INCLUDES			:=	$(addprefix -I ,$(INCDIR)) 
 
