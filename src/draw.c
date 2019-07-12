@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 11:44:40 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 19:38:14 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,17 +114,20 @@ static void	draw_hud(t_wolf *w)
 {
 	int	x;
 	int	y;
+	int	i;
 
-	y = W_GHEIGHT + 1;
+	y = W_GHEIGHT;
+	i = y * W_WIDTH;
 	while (y < W_HEIGHT)
 	{
 		x = 0;
 		while (x < W_WIDTH)
 		{
-			w->canvas.img[y * W_WIDTH + x] = 0xFF;
+			w->canvas.img[i + x] = 0xFF;
 			++x;
 		}
 		++y;
+		i += W_WIDTH;
 	}
 }
 

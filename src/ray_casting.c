@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/12 18:16:17 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/12 19:40:58 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static void		ray_casting2(t_wolf *w, int side, int x, int text)
 	w->ray.draw_end = w->ray.line_heigth * 0.5 + W_GHEIGHT2;
 	w->ray.yte = w->ray.draw_end;
 	if (w->ray.draw_end >= W_GHEIGHT)
-		w->ray.draw_end = W_GHEIGHT - 1;
+		w->ray.draw_end = W_GHEIGHT;
 	if (side == 0)
 		dx = w->player.pos.y + w->player.pwdist * w->ray.raydiry;
 	else
