@@ -6,7 +6,7 @@
 /*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/13 16:10:17 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/13 16:35:14 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int			draw(t_wolf *w)
 	{
 		update_fps(w);
 		SDL_PollEvent(&event);
+		if (event.type == SDL_DROPFILE)
+			SDL_free(event.drop.file);
 		if (event.type == SDL_QUIT)
 			break ;
 		ft_bzero(w->canvas.img, IMG_SIZE);
