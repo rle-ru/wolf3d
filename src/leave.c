@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 12:01:44 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/13 10:36:54 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 13:58:31 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static void		ft_print_error(t_error ret, t_wolf *w)
 
 static void		free_map(t_wolf *w)
 {
-	int	y;
+	int	x;
 
-	y = 0;
-	while (y < w->hei)
+	x = 0;
+	while (x < w->width)
 	{
-		ft_memdel((void**)&w->map[y]);
-		++y;
+		ft_memdel((void**)&w->map[x]);
+		++x;
 	}
 	ft_memdel((void**)(&w->map));
 }
