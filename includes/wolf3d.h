@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/11 23:28:53 by dacuvill         ###   ########.fr       */
+/*   Updated: 2019/07/13 11:21:06 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
 # define W_WIDTH 1024
-# define W_WIDTH2 W_WIDTH * 0.5
+# define W_WIDTH4 (W_WIDTH * 4)
+# define W_WIDTH2 (W_WIDTH * 0.5)
+# define CHAR_SX (W_WIDTH / 2 - 50)
+# define CHAR_EX (CHAR_SX + 100)
 # define W_HEIGHT 768
-# define W_GHEIGHT (W_HEIGHT - 100) // reserve 100px for hud
-# define W_GHEIGHT2 W_GHEIGHT * 0.5
-# define IMG_SIZE 4 * W_HEIGHT * W_WIDTH
+# define W_GHEIGHT (W_HEIGHT - 100)
+# define W_GHEIGHT2 (W_GHEIGHT * 0.5)
+# define IMG_SIZE (4 * W_HEIGHT * W_WIDTH)
 # define TEXTURES_N 10
 # include <stdint.h>
 # include <SDL.h>
@@ -136,7 +139,16 @@ typedef struct		s_ray_cast
 	int				yts;
 	int				yte;
 	int				xt;
-	int				color;
+	double			dw;
+	double			dp;
+	double			cd;
+	double			cfx;
+	double			cfy;
+	double			weight;
+	int				ftx;
+	int				fty;
+	double			fxw;
+	double			fyw;
 }					t_ray_cast;
 
 typedef struct		s_wolf
@@ -147,7 +159,7 @@ typedef struct		s_wolf
 	t_ray_cast		ray;
 	int				**map;
 	int				width;
-	int				height;
+	int				hei;
 	double			t;
 	double			ot;
 	double			ft;
@@ -214,9 +226,15 @@ int					draw(t_wolf *w);
 */
 int					ray_casting(t_wolf *w);
 
+void				ray_casting2(t_wolf *w, int side, int x, int text);
+
+void				put_line(t_wolf *w, int x, int xd, int text);
+
 /*
 ** Minimap function.
 */
 void				minimap(t_wolf *w);
+
+void				draw_hud(t_wolf *w);
 
 #endif

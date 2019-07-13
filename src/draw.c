@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 19:38:14 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 10:43:18 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,29 @@
 #include <math.h>
 #include <SDL.h>
 
-#include <stdio.h>
-
 static void	update_hooks2(t_wolf *w, const uint8_t *s)
 {
 	double		tmp;
 
 	if (s[SDL_SCANCODE_UP])
 	{
-		if ((tmp = w->player.pos.x + w->player.dir.x * w->ms + (w->player.dir.x < 0 ? -0.25 : 0.25)) >= 0 && (int)tmp < w->width)
+		if ((tmp = w->player.pos.x + w->player.dir.x * w->ms
+			+ (w->player.dir.x < 0 ? -0.25 : 0.25)) >= 0 && (int)tmp < w->width)
 			if (!w->map[(int)tmp][(int)w->player.pos.y])
 				w->player.pos.x += w->player.dir.x * w->ms;
-		if ((tmp = w->player.pos.y + w->player.dir.y * w->ms + (w->player.dir.y < 0 ? -0.25 : 0.25)) >= 0 && (int)tmp < w->height)
+		if ((tmp = w->player.pos.y + w->player.dir.y * w->ms
+			+ (w->player.dir.y < 0 ? -0.25 : 0.25)) >= 0 && (int)tmp < w->hei)
 			if (!w->map[(int)w->player.pos.x][(int)tmp])
 				w->player.pos.y += w->player.dir.y * w->ms;
 	}
 	else if (s[SDL_SCANCODE_DOWN])
 	{
-		if ((tmp = w->player.pos.x - w->player.dir.x * w->ms - (w->player.dir.x < 0 ? -0.25 : 0.25)) >= 0 && tmp < w->width)
+		if ((tmp = w->player.pos.x - w->player.dir.x * w->ms
+			- (w->player.dir.x < 0 ? -0.25 : 0.25)) >= 0 && tmp < w->width)
 			if (!w->map[(int)tmp][(int)w->player.pos.y])
 				w->player.pos.x -= w->player.dir.x * w->ms;
-		if ((tmp = w->player.pos.y - w->player.dir.y * w->ms - (w->player.dir.y < 0 ? -0.25 : 0.25)) >= 0 && tmp < w->height)
+		if ((tmp = w->player.pos.y - w->player.dir.y * w->ms
+			- (w->player.dir.y < 0 ? -0.25 : 0.25)) >= 0 && tmp < w->hei)
 			if (!w->map[(int)w->player.pos.x][(int)tmp])
 				w->player.pos.y -= w->player.dir.y * w->ms;
 	}
@@ -79,58 +81,6 @@ static void	update_fps(t_wolf *w)
 	w->rs = w->ft * 3.0;
 }
 
-static void	IMPORTANT_THINGS(t_wolf *w)
-{
-	int	sx;
-	int	ex;
-	int	y;
-	int	ys;
-	int	x;
-
-	if (w->pc > 100)
-		w->head ^= 1;
-	if (w ->pc > 100)
-		w->pc = 0;
-	w->pc++;
-	sx = W_WIDTH / 2 - 50;
-	ex = sx + 100;
-	y = W_GHEIGHT + 1;
-	ys = y;
-	while (y < W_HEIGHT)
-	{
-		x = sx;
-		while (x < ex)
-		{
-			int tmp = (((double)y - (double)ys) / 100.0) * w->text[8 + w->head]->h;
-			w->canvas.img[y * W_WIDTH + x] 
-				= ((int*)(w->text[8 + w->head]->pixels))[tmp * w->text[8 + w->head]->w + (int)((double)((x - sx) / 100.0) * w->text[8 + w->head]->w)];
-			++x;
-		}
-		++y;
-	}
-}
-
-static void	draw_hud(t_wolf *w)
-{
-	int	x;
-	int	y;
-	int	i;
-
-	y = W_GHEIGHT;
-	i = y * W_WIDTH;
-	while (y < W_HEIGHT)
-	{
-		x = 0;
-		while (x < W_WIDTH)
-		{
-			w->canvas.img[i + x] = 0xFF;
-			++x;
-		}
-		++y;
-		i += W_WIDTH;
-	}
-}
-
 int			draw(t_wolf *w)
 {
 	SDL_Event	event;
@@ -143,12 +93,10 @@ int			draw(t_wolf *w)
 			break ;
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
-		ray_casting(w);	
+		ray_casting(w);
 		minimap(w);
 		draw_hud(w);
-		IMPORTANT_THINGS(w);
-		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img,
-			W_WIDTH * 4);
+		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img, W_WIDTH4);
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
 		SDL_RenderPresent(w->canvas.renderer);
 	}

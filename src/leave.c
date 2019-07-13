@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 12:01:44 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 10:20:30 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 10:36:54 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void		ft_print_error(t_error ret, t_wolf *w)
 	else if (ret == falloc)
 		ft_fdprintf(STDERR_FILENO, "A malloc failed\n");
 	else if (ret == badline)
-		ft_fdprintf(STDERR_FILENO, "Incorrect line : %d\n", w->height);
+		ft_fdprintf(STDERR_FILENO, "Incorrect line : %d\n", w->hei);
 	else if (ret == noplayer)
-		ft_fdprintf(STDERR_FILENO, "No player in map\n", w->height);
+		ft_fdprintf(STDERR_FILENO, "No player in map\n", w->hei);
 }
 
 static void		free_map(t_wolf *w)
@@ -38,7 +38,7 @@ static void		free_map(t_wolf *w)
 	int	y;
 
 	y = 0;
-	while (y < w->height)
+	while (y < w->hei)
 	{
 		ft_memdel((void**)&w->map[y]);
 		++y;

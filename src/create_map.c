@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 09:34:15 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 10:36:54 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,12 @@ static t_error	check_player_spawn(t_wolf *w, int x, int y, int *lpos)
 	return (ok);
 }
 
-static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
+static t_error	ft_split_line(t_wolf *w, int y, t_line *line, int lpos)
 {
 	int		x;
-	int		lpos;
 	int		tmp;
 
 	x = -1;
-	lpos = 0;
 	while (++x < w->width)
 	{
 		while (line->line[lpos] && line->line[lpos] == ' ')
@@ -45,7 +43,7 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 			continue ;
 		}
 		tmp = ft_atoi(line->line + lpos);
-		if (x == 0 || y == 0 || y == w->height - 1 || x == w->width - 1)
+		if (x == 0 || y == 0 || y == w->hei - 1 || x == w->width - 1)
 			tmp = !tmp ? 1 : tmp;
 		tmp = tmp >= TEXTURES_N || tmp < 0 ? 1 : tmp;
 		w->map[x][y] = tmp;
@@ -53,7 +51,7 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line)
 				|| line->line[lpos] == '-'))
 			++lpos;
 	}
-	return (!(y == w->height - 1 && w->parser.player == false) ? ok : noplayer);
+	return (!(y == w->hei - 1 && w->parser.player == false) ? ok : noplayer);
 }
 
 static void		init_wolf(t_wolf *w)
@@ -73,9 +71,9 @@ static t_error	fill_map(t_wolf *w)
 
 	y = -1;
 	line = w->parser.lines;
-	while (++y < w->height && line != NULL)
+	while (++y < w->hei && line != NULL)
 	{
-		if ((ret = ft_split_line(w, y, line)) != ok)
+		if ((ret = ft_split_line(w, y, line, 0)) != ok)
 			return (ret);
 		tmp = line;
 		line = line->next;
@@ -97,7 +95,7 @@ t_error			ft_create_map(t_wolf *w)
 	i = 0;
 	while (i < w->width)
 	{
-		if (!(w->map[i] = malloc(w->height * sizeof(int))))
+		if (!(w->map[i] = malloc(w->hei * sizeof(int))))
 			return (falloc);
 		++i;
 	}

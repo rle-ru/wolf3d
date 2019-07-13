@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/12 21:25:29 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 10:54:18 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ static int		check_collision(t_wolf *w, int *side)
 		{
 			w->player.sidedist.y += w->player.deltadist.y;
 			w->player.map.y += w->player.step.y;
-			*side = ((w->player.pos.y < w->player.map.y	) ? 1 : 3);
+			*side = ((w->player.pos.y < w->player.map.y) ? 1 : 3);
 		}
-		if (w->player.map.x < 0 || w->player.map.x >= w->width || w->player.map.y < 0 || w->player.map.y >= w->height)
+		if (w->player.map.x < 0 || w->player.map.x >= w->width
+			|| w->player.map.y < 0 || w->player.map.y >= w->hei)
 			return (INT_MIN);
 		if (w->map[w->player.map.x][w->player.map.y] > 0)
 			hit = 1;
@@ -70,7 +71,7 @@ static int		check_collision(t_wolf *w, int *side)
 	return (w->map[w->player.map.x][w->player.map.y]);
 }
 
-static void		put_line(t_wolf *w, int x, int xd, int text)
+void			put_line(t_wolf *w, int x, int xd, int text)
 {
 	int			y;
 	int			i;
@@ -88,92 +89,6 @@ static void		put_line(t_wolf *w, int x, int xd, int text)
 			/ (double)(w->ray.yte - w->ray.yts));
 		w->canvas.img[i] = pixels[(int)(((int)(prog * t->h)) * t->w) + xd];
 		i += W_WIDTH;
-		++y;
-	}
-}
-
-static void		ray_casting2(t_wolf *w, int side, int x, int text)
-{
-	double	dx;
-	double	fxw;
-	double	fyw;
-
-	if (!(side % 2))
-		w->player.pwdist = (w->player.map.x - w->player.pos.x
-			+ (1 - w->player.step.x) * 0.5) / w->ray.raydirx;
-	else
-		w->player.pwdist = (w->player.map.y - w->player.pos.y
-			+ (1 - w->player.step.y) * 0.5) / w->ray.raydiry;
-	w->ray.line_heigth = (int)(W_GHEIGHT / w->player.pwdist);
-	w->ray.draw_start = -(w->ray.line_heigth) * 0.5 + W_GHEIGHT2;
-	w->ray.yts = w->ray.draw_start;
-	if (w->ray.draw_start < 0)
-		w->ray.draw_start = 0;
-	w->ray.draw_end = w->ray.line_heigth * 0.5 + W_GHEIGHT2;
-	w->ray.yte = w->ray.draw_end;
-	if (w->ray.draw_end >= W_GHEIGHT)
-		w->ray.draw_end = W_GHEIGHT;
-	if (side % 2 == 0)
-		dx = w->player.pos.y + w->player.pwdist * w->ray.raydiry;
-	else
-		dx = w->player.pos.x + w->player.pwdist * w->ray.raydirx;
-	dx -= (int)dx;
-	int	text2 = (((text + side) > TEXTURES_N - 1) ? (TEXTURES_N - 1) : (text + side));
-	put_line(w, x, (int)(dx * w->text[text2]->w), text2);
-	if (side % 2 == 0 && w->ray.raydirx > 0)
-	{
-		fxw = w->player.map.x;
-		fyw = w->player.map.y + dx;
-	}
-	else if (side % 2 == 0 && w->ray.raydirx < 0)
-	{
-		fxw = w->player.map.x + 1.0;
-		fyw = w->player.map.y + dx;
-	}
-	else if (side % 2 == 1 && w->ray.raydiry > 0)
-	{
-		fxw = w->player.map.x + dx;
-		fyw = w->player.map.y;
-	}
-	else
-	{
-		fxw = w->player.map.x + dx;
-		fyw = w->player.map.y + 1.0;
-	}
-	if (w->player.map.x < 0 || w->player.map.x >= w->width || w->player.map.y < 0 || w->player.map.y >= w->height)
-	{
-		++x;
-		return ;
-	}
-	
-	
-	double	dw;
-	double	dp;
-	double	cd;
-	double	cfx;
-	double	cfy;
-	double	weight;
-	int		y;
-	int		ftx;
-	int		fty;
-
-	dw = w->player.pwdist;
-	dp = 0.0;
-	if (w->ray.draw_end < 0)
-		w->ray.draw_end = W_GHEIGHT;
-	y = w->ray.draw_end + 1;
-	while (y < W_GHEIGHT)
-	{
-		cd = W_GHEIGHT / (2.0 * y - W_GHEIGHT);
-		weight = (cd - dp) / (dw - dp);
-		cfx = weight * fxw + (1.0 - weight) * w->player.pos.x;
-		cfy = weight * fyw + (1.0 - weight) * w->player.pos.y;
-		ftx = (int)(cfx * w->text[0]->w) % w->text[0]->w;
-		fty = (int)(cfy * w->text[0]->h) % w->text[0]->h;
-		w->canvas.img[(int)(y * W_WIDTH + x)] = ((int*)(w->text[0]->pixels))[fty * w->text[0]->w + ftx];
-		ftx = (int)(cfx * w->text[6]->w) % w->text[6]->w;
-		fty = (int)(cfy * w->text[6]->h) % w->text[6]->h;
-		w->canvas.img[(int)((W_GHEIGHT - y) * W_WIDTH + x)] = ((int*)(w->text[6]->pixels))[fty * w->text[6]->w + ftx];
 		++y;
 	}
 }

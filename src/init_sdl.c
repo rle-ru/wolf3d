@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 09:21:56 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 19:26:57 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 10:31:33 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@
 static t_error		load_texture(t_wolf *w, char *path, int pos)
 {
 	SDL_Surface	*tmp;
+
 	if (!(tmp = IMG_Load(path)))
 		return (falloc);
-	if (!(w->text[pos] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_ARGB8888, 0)))
+	if (!(w->text[pos] = SDL_ConvertSurfaceFormat(tmp,
+				SDL_PIXELFORMAT_ARGB8888, 0)))
 		return (falloc);
 	SDL_FreeSurface(tmp);
 	return (0);
 }
 
-static t_error	init_textures(t_wolf *w)
+static t_error		init_textures(t_wolf *w)
 {
 	t_error	error;
 
@@ -43,9 +45,8 @@ static t_error	init_textures(t_wolf *w)
 	return (error);
 }
 
-t_error	init_sdl(t_wolf *w)
+t_error				init_sdl(t_wolf *w)
 {
-
 	if (init_textures(w) != ok)
 		return (falloc);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)

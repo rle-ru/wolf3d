@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 14:06:33 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/12 09:35:13 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 10:36:54 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_error			ft_parse_file(t_wolf *w)
 	current_lines = 0;
 	while ((ret_gnl = get_next_line(w->parser.fd, &line)) == 1)
 	{
-		++w->height;
+		++w->hei;
 		if ((ret = ft_check_line(&w->parser, line)) != ok)
 			return (ret);
 	}
