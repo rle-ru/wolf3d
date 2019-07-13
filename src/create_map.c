@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:06:09 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/13 10:36:54 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 16:02:03 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static t_error	ft_split_line(t_wolf *w, int y, t_line *line, int lpos)
 
 static void		init_wolf(t_wolf *w)
 {
+	w->minimap.display = true;
 	w->player.dir.x = -1;
 	w->player.dir.y = -0;
 	w->player.plane.x = 0;

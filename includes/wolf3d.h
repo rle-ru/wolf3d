@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:38:14 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/13 11:21:06 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 16:07:57 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,16 @@ typedef struct		s_vector2
 	double			y;
 }					t_vector2;
 
+typedef struct		s_minimap
+{
+	t_bool			display;
+	int				time;
+	int				start_x;
+	int				end_x;
+	int				start_y;
+	int				end_y;
+}					t_minimap;
+
 typedef struct		s_cam
 {
 	t_point			map;
@@ -157,6 +167,7 @@ typedef struct		s_wolf
 	t_canvas		canvas;
 	t_cam			player;
 	t_ray_cast		ray;
+	t_minimap		minimap;
 	int				**map;
 	int				width;
 	int				hei;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dacuvill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/13 14:39:56 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 16:10:17 by dacuvill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ static void	update_hooks2(t_wolf *w, const uint8_t *s)
 	return ;
 }
 
+static void	check_display_minimap(t_wolf *w)
+{
+	if (w->minimap.time < 50)
+		return ;
+	w->minimap.display ^= 1;
+	w->minimap.time = 0;
+}
+
 static void	update_hooks(t_wolf *w)
 {
 	const uint8_t	*s = SDL_GetKeyboardState(NULL);
@@ -54,6 +62,8 @@ static void	update_hooks(t_wolf *w)
 	opx = w->player.plane.x;
 	if (s[SDL_SCANCODE_ESCAPE])
 		leave(ok, w);
+	if (s[SDL_SCANCODE_M])
+		check_display_minimap(w);
 	if (s[SDL_SCANCODE_RIGHT])
 	{
 		w->player.dir.x = odx * cos(w->rs) - w->player.dir.y * sin(w->rs);
@@ -94,7 +104,9 @@ int			draw(t_wolf *w)
 		ft_bzero(w->canvas.img, IMG_SIZE);
 		update_hooks(w);
 		ray_casting(w);
-		minimap(w);
+		if (w->minimap.display)
+			minimap(w);
+		w->minimap.time++;
 		draw_hud(w);
 		SDL_UpdateTexture(w->canvas.texture, NULL, w->canvas.img, W_WIDTH4);
 		SDL_RenderCopy(w->canvas.renderer, w->canvas.texture, NULL, NULL);
