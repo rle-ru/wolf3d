@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 16:04:29 by dacuvill          #+#    #+#             */
-/*   Updated: 2019/07/13 10:54:18 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 14:25:34 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int				ray_casting(t_wolf *w)
 	while (x < W_WIDTH)
 	{
 		camx = (2 * x / (double)W_WIDTH - 1) * (W_WIDTH / W_GHEIGHT);
-		w->ray.raydirx = w->player.dir.x + w->player.plane.x * camx;
-		w->ray.raydiry = w->player.dir.y + w->player.plane.y * camx;
+		w->ray.raydirx = -w->player.dir.x + w->player.plane.x * camx;
+		w->ray.raydiry = -w->player.dir.y + w->player.plane.y * camx;
 		w->player.map.x = (int)w->player.pos.x;
 		w->player.map.y = (int)w->player.pos.y;
 		w->player.deltadist.x = sqrt(1 + (w->ray.raydiry * w->ray.raydiry)

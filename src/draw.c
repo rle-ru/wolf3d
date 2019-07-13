@@ -6,7 +6,7 @@
 /*   By: rle-ru <rle-ru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:02:05 by rle-ru            #+#    #+#             */
-/*   Updated: 2019/07/13 10:43:18 by rle-ru           ###   ########.fr       */
+/*   Updated: 2019/07/13 14:39:56 by rle-ru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	update_hooks2(t_wolf *w, const uint8_t *s)
 {
 	double		tmp;
 
-	if (s[SDL_SCANCODE_UP])
+	if (s[SDL_SCANCODE_DOWN])
 	{
 		if ((tmp = w->player.pos.x + w->player.dir.x * w->ms
 			+ (w->player.dir.x < 0 ? -0.25 : 0.25)) >= 0 && (int)tmp < w->width)
@@ -30,7 +30,7 @@ static void	update_hooks2(t_wolf *w, const uint8_t *s)
 			if (!w->map[(int)w->player.pos.x][(int)tmp])
 				w->player.pos.y += w->player.dir.y * w->ms;
 	}
-	else if (s[SDL_SCANCODE_DOWN])
+	else if (s[SDL_SCANCODE_UP])
 	{
 		if ((tmp = w->player.pos.x - w->player.dir.x * w->ms
 			- (w->player.dir.x < 0 ? -0.25 : 0.25)) >= 0 && tmp < w->width)
@@ -54,14 +54,14 @@ static void	update_hooks(t_wolf *w)
 	opx = w->player.plane.x;
 	if (s[SDL_SCANCODE_ESCAPE])
 		leave(ok, w);
-	if (s[SDL_SCANCODE_LEFT])
+	if (s[SDL_SCANCODE_RIGHT])
 	{
 		w->player.dir.x = odx * cos(w->rs) - w->player.dir.y * sin(w->rs);
 		w->player.dir.y = odx * sin(w->rs) + w->player.dir.y * cos(w->rs);
 		w->player.plane.x = opx * cos(w->rs) - w->player.plane.y * sin(w->rs);
 		w->player.plane.y = opx * sin(w->rs) + w->player.plane.y * cos(w->rs);
 	}
-	else if (s[SDL_SCANCODE_RIGHT])
+	else if (s[SDL_SCANCODE_LEFT])
 	{
 		w->player.dir.x = odx * cos(-w->rs) - w->player.dir.y * sin(-w->rs);
 		w->player.dir.y = odx * sin(-w->rs) + w->player.dir.y * cos(-w->rs);
